@@ -476,16 +476,15 @@ else
                                 @ErrorText(Bad(form.CreateLeafDTO!.LeafThicknessId <= 0), "Wybierz grubość.")
                             </div>
 
-                            <div class="submission-field @FieldError(Bad(!form.CreateLeafDTO!.LeafFlavourId.HasValue))">
-                                <label>Smak@(Req)</label>
+                            <div class="submission-field">
+                                <label>Smak</label>
                                 <InputSelect @bind-Value="form.CreateLeafDTO!.LeafFlavourId">
-                                    <option value="">Wybierz smak</option>
+                                    <option value="">Nie wiem / brak informacji</option>
                                     @foreach (var x in flavours)
                                     {
                                         <option value="@x.Id">@x.Name</option>
                                     }
-                                </InputSelect>
-                                @ErrorText(Bad(!form.CreateLeafDTO!.LeafFlavourId.HasValue), "Wybierz smak.")
+                                </InputSelect> 
                             </div>
 
                             <div class="submission-field">
@@ -558,16 +557,15 @@ else
                                 @ErrorText(Bad(form.CreateFlowerDTO!.FlowerShapeId <= 0), "Wybierz kształt.")
                             </div>
 
-                            <div class="submission-field @FieldError(Bad(!form.CreateFlowerDTO!.FlowerFlavourId.HasValue))">
-                                <label>Smak@(Req)</label>
+                            <div class="submission-field">
+                                <label>Smak</label>
                                 <InputSelect @bind-Value="form.CreateFlowerDTO!.FlowerFlavourId">
-                                    <option value="">Wybierz smak</option>
+                                    <option value="">Nie wiem / brak informacji</option>
                                     @foreach (var x in flavours)
                                     {
                                         <option value="@x.Id">@x.Name</option>
                                     }
-                                </InputSelect>
-                                @ErrorText(Bad(!form.CreateFlowerDTO!.FlowerFlavourId.HasValue), "Wybierz smak.")
+                                </InputSelect> 
                             </div>
 
                             <div class="submission-field">
@@ -629,16 +627,15 @@ else
                     @if (ShowFruitSection)
                     {
                         <div class="submission-grid">
-                            <div class="submission-field @FieldError(Bad(!form.CreateFruitDTO!.FruitFlavourId.HasValue))">
-                                <label>Smak@(Req)</label>
+                            <div class="submission-field">
+                                <label>Smak</label>
                                 <InputSelect @bind-Value="form.CreateFruitDTO!.FruitFlavourId">
-                                    <option value="">Wybierz smak</option>
+                                    <option value="">Nie wiem / brak informacji</option>
                                     @foreach (var x in flavours)
                                     {
                                         <option value="@x.Id">@x.Name</option>
                                     }
-                                </InputSelect>
-                                @ErrorText(Bad(!form.CreateFruitDTO!.FruitFlavourId.HasValue), "Wybierz smak.")
+                                </InputSelect> 
                             </div>
 
                             <div class="submission-field @FieldError(Bad(form.CreateFruitDTO!.FruitShapeId <= 0))">
@@ -1205,17 +1202,14 @@ else
         form.CreateLeafDTO!.LeafShapeId <= 0 ||
         form.CreateLeafDTO.LeafColorId <= 0 ||
         form.CreateLeafDTO.LeafSurfaceId <= 0 ||
-        form.CreateLeafDTO.LeafThicknessId <= 0 ||
-        !form.CreateLeafDTO.LeafFlavourId.HasValue);
+        form.CreateLeafDTO.LeafThicknessId <= 0);
 
     private bool FlowerInvalid => ShowFlowerSection && Bad(
         form.CreateFlowerDTO!.FlowerColorId <= 0 ||
-        form.CreateFlowerDTO.FlowerShapeId <= 0 ||
-        !form.CreateFlowerDTO.FlowerFlavourId.HasValue);
+        form.CreateFlowerDTO.FlowerShapeId <= 0);
 
     private bool FruitInvalid => ShowFruitSection && Bad(
-        !form.CreateFruitDTO!.FruitFlavourId.HasValue ||
-        form.CreateFruitDTO.FruitShapeId <= 0 ||
+        form.CreateFruitDTO!.FruitShapeId <= 0 ||
         form.CreateFruitDTO.FruitColorId <= 0 ||
         form.CreateFruitDTO.FruitSurfaceId <= 0 ||
         form.CreateFruitDTO.FruitThicknessId <= 0);

@@ -10,7 +10,6 @@ namespace HerbRecognition_APIs.DTOs
         public int FlowerColorId { get; set; }
         [Required]
         public int FlowerShapeId { get; set; }
-        [Required]
         public int? FlowerFlavourId { get; set; }
         [Required]
         [Range(0,5)]

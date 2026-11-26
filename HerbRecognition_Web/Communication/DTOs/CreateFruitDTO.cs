@@ -4,7 +4,6 @@ namespace HerbRecognition_Web.DTOs
 {
     public class CreateFruitDTO
     {
-        [Required]
         public int? FruitFlavourId { get; set; }
         [Required]
         public int FruitShapeId { get; set; }

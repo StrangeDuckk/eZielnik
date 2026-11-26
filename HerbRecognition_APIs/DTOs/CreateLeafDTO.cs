@@ -20,7 +20,6 @@ namespace HerbRecognition_APIs.DTOs
         public decimal LeafLength { get; set; }
         [Required]
         public int LeafThicknessId { get; set; }
-        [Required]
         public int? LeafFlavourId { get; set; }
 
         [Range(1, 12)]

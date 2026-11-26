@@ -446,7 +446,7 @@
 
         var parts = new Dictionary<string, PartView?>
         {
-            ["hat"] = p.GetHatDTO is { } hat ? new PartView("Kapelusz", "CECHA GRZYBA",
+            ["hat"] = p.GetHatDTO is { } hat ? new PartView("Kapelusz", "",
             [
                 ("Kolor", Text(hat.HatColorName)),
                 ("Kształt", Text(hat.HatShapeName)),
@@ -459,7 +459,7 @@
                 ("Dodatkowe informacje", Text(hat.HatMoreInfo)),
             ]) : null,
 
-            ["flower"] = p.GetFlowerDTO is { } flower ? new PartView("Kwiat", "CECHA ROŚLINY",
+            ["flower"] = p.GetFlowerDTO is { } flower ? new PartView("Kwiat", "",
             [
                 ("Rozmiar", $"{flower.FlowerSizeInCm:0.##} cm"),
                 ("Kolor", Text(flower.FlowerColorName)),
@@ -470,7 +470,7 @@
                 ("Dodatkowe informacje", Text(flower.FlowerMoreInfo)),
             ]) : null,
 
-            ["fruit"] = p.GetFruitDTO is { } fruit ? new PartView("Owoc", "CECHA ROŚLINY",
+            ["fruit"] = p.GetFruitDTO is { } fruit ? new PartView("Owoc", "",
             [
                 ("Smak", Text(fruit.FruitFlavourName)),
                 ("Kształt", Text(fruit.FruitShapeName)),
@@ -481,7 +481,7 @@
                 ("Dodatkowe informacje", Text(fruit.FruitMoreInfo)),
             ]) : null,
 
-            ["leaf"] = p.GetLeafDTO is { } leaf ? new PartView("Liść", "CECHA ROŚLINY",
+            ["leaf"] = p.GetLeafDTO is { } leaf ? new PartView("Liść", "",
             [
                 ("Kształt", Text(leaf.LeafShapeName)),
                 ("Kolor", Text(leaf.LeafColorName)),
@@ -496,7 +496,7 @@
                 ("Dodatkowe informacje", Text(leaf.LeafMoreInfo)),
             ]) : null,
 
-            ["stalk"] = p.GetStalkDTO is { } stalk ? new PartView(StalkSectionName, "CECHA ROŚLINY",
+            ["stalk"] = p.GetStalkDTO is { } stalk ? new PartView(StalkSectionName, "",
             [
                 ("Kolor", Text(stalk.StalkColorName)),
                 ("Kształt", Text(stalk.StalkShapeName)),
@@ -506,7 +506,7 @@
                 ("Dodatkowe informacje", Text(stalk.StalkMoreInfo)),
             ]) : null,
 
-            ["sap"] = p.GetSapDTO is { } sap ? new PartView("Sok", "CECHA ROŚLINY",
+            ["sap"] = p.GetSapDTO is { } sap ? new PartView("Sok", "",
             [
                 ("Kolor", Text(sap.SapColor)),
                 ("Pozostawia plamy", YesNo(sap.SapLeavesStains)),
@@ -515,7 +515,7 @@
                 ("Dodatkowe informacje", Text(sap.SapMoreInfo)),
             ]) : null,
 
-            ["root"] = p.GetRootDTO is { } root ? new PartView("Korzeń", "CECHA ROŚLINY",
+            ["root"] = p.GetRootDTO is { } root ? new PartView("Korzeń", "",
             [
                 ("Kolor", Text(root.RootColorName)),
                 ("Powierzchnia", Text(root.RootSurfaceName)),

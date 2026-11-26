@@ -20,7 +20,6 @@ namespace HerbRecognition_Web.DTOs
         public decimal LeafLength { get; set; }
         [Required]
         public int LeafThicknessId { get; set; }
-        [Required]
         public int? LeafFlavourId { get; set; }
         
         [StringLength(200, MinimumLength = 2)]
