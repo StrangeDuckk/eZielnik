@@ -1,4 +1,4 @@
-﻿/* =====================================================================
+/* =====================================================================
    TRYB CIEMNY – nakładka na istniejące style.
    Prefiks :root[data-theme="dark"]
    ===================================================================== */
@@ -267,7 +267,7 @@
         color: var(--d-accent);
     }
 
-    :root[data-theme="dark"] .plant-card-pills .plant-type:not(.plant-month):not(.plant-pending) {
+    :root[data-theme="dark"] .plant-card-pills .plant-type:not(.plant-month):not(.plant-pending):not(.plant-poison) {
         background: rgba(28, 38, 32, 0.94);
         box-shadow: 0 0 0 1px var(--d-border);
         color: var(--d-text);
@@ -838,3 +838,56 @@
         background: var(--d-warn-bg);
         color: var(--d-warn-text);
     }
+
+
+/* =====================================================================
+   Strona rośliny / przepisu – przyciski w pastylkach, "Trująca"
+   ===================================================================== */
+
+:root[data-theme="dark"] .pd-pill-button {
+    background: var(--d-surface-2);
+    border-color: var(--d-border-strong);
+    color: var(--d-accent);
+}
+
+    :root[data-theme="dark"] .pd-pill-button:hover,
+    :root[data-theme="dark"] .pd-pill-button:focus-visible {
+        background: var(--d-accent-soft);
+        border-color: var(--d-accent-strong);
+    }
+
+    :root[data-theme="dark"] .pd-pill-button.is-primary {
+        background: var(--d-accent-strong);
+        border-color: var(--d-accent-strong);
+        color: #ffffff;
+    }
+
+        :root[data-theme="dark"] .pd-pill-button.is-primary:hover,
+        :root[data-theme="dark"] .pd-pill-button.is-primary:focus-visible {
+            background: #4a9a6b;
+            border-color: #4a9a6b;
+        }
+
+:root[data-theme="dark"] .plant-type-badge.pd-poison-badge {
+    background: var(--d-err-bg);
+    color: var(--d-err-text);
+}
+
+:root[data-theme="dark"] .pd-toxic.is-poison {
+    background: var(--d-err-bg);
+    border-color: var(--d-err-border);
+}
+
+    :root[data-theme="dark"] .pd-toxic.is-poison h2 {
+        color: var(--d-err-text);
+    }
+
+    :root[data-theme="dark"] .pd-toxic.is-poison p {
+        color: #f3c6bf;
+    }
+
+:root[data-theme="dark"] .plant-card-pills .plant-type.plant-month {
+    background: rgba(18, 25, 21, 0.85);
+    border-color: var(--d-border-strong);
+    color: var(--d-text-2);
+}

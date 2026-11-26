@@ -1,4 +1,4 @@
-﻿.similar-picker {
+.similar-picker {
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -21,7 +21,7 @@
     background: #e3f0e8;
     color: #2f6c4d;
     font-weight: 600;
-    font-size: 0.9rem;
+    font-size: var(--fs-sm);
 }
 
     .similar-chip.pending {
@@ -142,7 +142,7 @@
 }
 
     .similar-option-names span {
-        font-size: 0.85rem;
+        font-size: var(--fs-sm);
         color: #7a857f;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -153,7 +153,7 @@
     flex: 0 0 auto;
     padding: 3px 8px;
     border-radius: 999px;
-    font-size: 0.75rem;
+    font-size: var(--fs-2xs);
     font-weight: 600;
     white-space: nowrap;
 }
@@ -179,6 +179,6 @@
 
 .similar-limit {
     margin: 0;
-    font-size: 0.85rem;
+    font-size: var(--fs-sm);
     color: #7a857f;
 }

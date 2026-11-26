@@ -1,4 +1,4 @@
-﻿.submission-page {
+.submission-page {
     padding-bottom: 64px;
 }
 
@@ -35,7 +35,7 @@
     .submission-section > h2 {
         margin: 0;
         color: #24372a;
-        font-size: 1.35rem;
+        font-size: var(--fs-lg);
         font-weight: 700;
         letter-spacing: -0.02em;
     }
@@ -48,7 +48,7 @@
 /* "Czy posiada …?" – przełącznik w nagłówku */
 .submission-section-head .switch-label {
     color: #536158;
-    font-size: 0.9rem;
+    font-size: var(--fs-sm);
     font-weight: 600;
 }
 
@@ -71,7 +71,7 @@
 .section-description {
     margin: -10px 0 20px;
     color: #68756a;
-    font-size: 0.9rem;
+    font-size: var(--fs-sm);
 }
 
 
@@ -98,7 +98,7 @@
 
 .submission-field label {
     color: #344538;
-    font-size: 0.9rem;
+    font-size: var(--fs-sm);
     font-weight: 600;
 }
 
@@ -155,7 +155,7 @@
 
 .validation-message {
     color: #b33a3a;
-    font-size: 0.84rem;
+    font-size: var(--fs-sm);
 }
 
 .validation-errors {
@@ -311,7 +311,7 @@
     align-items: center;
     gap: 6px;
     color: #b33a3a;
-    font-size: 0.84rem;
+    font-size: var(--fs-sm);
     font-weight: 600;
 }
 
@@ -383,7 +383,7 @@
     }
 
         .submission-section-head h2 {
-            font-size: 1.2rem;
+            font-size: var(--fs-lg);
         }
 
         /* przełącznik pod tytułem, na całą szerokość */

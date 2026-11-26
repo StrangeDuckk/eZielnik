@@ -1,4 +1,4 @@
-﻿@page "/plants"
+@page "/plants"
 
 @using System.Globalization
 @using HerbRecognition_Web.Communication.DTOs
@@ -7,6 +7,7 @@
 
 @inject PlantApiService PlantApiService
 @inject AdminAuthService Auth
+@inject PendingPictureService PendingPictures
 
 <PageTitle>Wszystkie rośliny</PageTitle>
 
@@ -14,11 +15,11 @@
 
     <section class="plants-header">
         <div>
-            <span class="section-label">HERB RECOGNITION</span>
+            <span class="section-label">eZielnik</span>
 
             <h1>Wszystkie rośliny</h1>
 
-            <p>Odkrywaj rośliny znajdujące się w bazie Herb Recognition.</p>
+            <p>Odkrywaj rośliny znajdujące się w bazie eZielnika.</p>
 
             <HerbRecognition_Web.Components.Shared.SearchBar />
 
@@ -101,77 +102,7 @@
 
             @foreach (var card in Cards)
             {
-                var icon = PlantTypeIcon.For(card.PlantTypeName);
-
-                <article class="plant-card @(card.IsPending ? "pending" : "")">
-
-                    @* zdjęcie zawsze w całości (contain), bez przycinania *@
-                    <div class="plant-card-image">
-                        @if (card.ThumbnailUrl is not null)
-                        {
-                            <img src="@card.ThumbnailUrl" alt="" loading="lazy" />
-                        }
-                        else
-                        {
-                            <span class="plant-card-placeholder" aria-hidden="true">@icon</span>
-                        }
-
-                        <div class="plant-card-pills">
-                            <span class="plant-type">
-                                <span class="plant-type-icon" aria-hidden="true">@icon</span>
-                                @(card.PlantTypeName ?? "Nieznany")
-                            </span>
-
-                            @if (!string.IsNullOrEmpty(card.MonthOfHarvestName))
-                            {
-                                <span class="plant-type plant-month">Zbiór: @card.MonthOfHarvestName</span>
-                            }
-
-                            @if (card.IsPoisonous)
-                            {
-                                <span class="plant-type plant-poison" title="Roślina trująca">☠ Trująca</span>
-                            }
-
-                            @if (card.IsPending)
-                            {
-                                <span class="plant-type plant-pending">Niezweryfikowana</span>
-                            }
-                        </div>
-
-                        @* tylko wygoda – prawdziwą ochroną są strony admina i API (JWT z rolą Admin) *@
-                        @if (Auth.IsLoggedIn)
-                        {
-                            <a href="@(card.IsPending ? $"/admin/submissions/{card.Id}" : $"/admin/plants/{card.Id}")"
-                               class="plant-card-edit">
-                                <span aria-hidden="true">✎</span> Edytuj
-                            </a>
-                        }
-                    </div>
-
-                    <div class="plant-card-info">
-                        <h2 title="@card.PolishName">
-                            @if (card.IsPending)
-                            {
-                                @card.PolishName
-                            }
-                            else
-                            {
-                                @* link rozciągnięty na cały kafelek (CSS ::after) *@
-                                <a href="@($"/plants/{card.Id}")" class="plant-card-stretched">@card.PolishName</a>
-                            }
-                        </h2>
-
-                        <p class="plant-card-meta">
-                            @if (!string.IsNullOrEmpty(card.LatinName))
-                            {
-                                <em>@card.LatinName</em>
-                                <span aria-hidden="true"> · </span>
-                            }
-                            <span>@(card.IsPending ? $"Zgłoszenie #{card.Id}" : $"#{card.Id}")</span>
-                        </p>
-                    </div>
-
-                </article>
+                <PlantCard @key="(card.IsPending, card.Id)" Item="card" ShowEdit="Auth.IsLoggedIn" />
             }
 
             <div class="plant-card-content">
@@ -193,8 +124,12 @@
     private bool isLoading = true;
     private string? errorMessage;
 
-    private bool showPending;
+    // zgłoszenia widoczne od razu – przełącznik pozwala je ukryć
+    private bool showPending = true;
     private bool pendingLoaded;
+
+    // admin: Id zgłoszenia -> miniatura pierwszego zdjęcia
+    private Dictionary<int, string> pendingThumbnails = new();
     private bool isLoadingPending;
     private string? pendingError;
 
@@ -217,25 +152,25 @@
         new[] { filterType, filterOccurance, filterMonth, filterPoison }.Count(f => f is not null);
 
     // zatwierdzone + (opcjonalnie) zgłoszenia – zanim zadziałają filtry.
-    // Zgłoszenia celowo bez zdjęć – nie były jeszcze sprawdzone przez admina.
-    private IEnumerable<LibraryCard> BaseCards =>
-        plants.Select(p => new LibraryCard(
+    // Zgłoszenia publicznie bez zdjęć (nie były sprawdzone); admin widzi miniaturę pierwszego zdjęcia.
+    private IEnumerable<PlantCardItem> BaseCards =>
+        plants.Select(p => new PlantCardItem(
                 p.Id, p.PolishName, p.LatinName,
                 p.PlantTypeDTO?.Name, p.MonthOfHarvestName,
                 p.Occurance?.Occurance,
                 LibraryFilter.IsPoisonous(p.PoisonabilityDescription),
                 SafeUrl.Image(p.MainThumbnailUrl), IsPending: false))
             .Concat(showPending
-                ? pendingPlants.Select(p => new LibraryCard(
+                ? pendingPlants.Select(p => new PlantCardItem(
                     p.Id, p.PolishName, p.LatinName,
                     p.PlantTypeName, p.MonthOfHarvestName,
                     p.OccuranceName,
                     LibraryFilter.IsPoisonous(p.PoisonabilityDescription),
-                    ThumbnailUrl: null, IsPending: true))
-                : Enumerable.Empty<LibraryCard>());
+                    ThumbnailUrl: pendingThumbnails.GetValueOrDefault(p.Id), IsPending: true))
+                : Enumerable.Empty<PlantCardItem>());
 
     // po filtrach, posortowane po nazwie polskiej
-    private IEnumerable<LibraryCard> Cards =>
+    private IEnumerable<PlantCardItem> Cards =>
         BaseCards
             .Where(c => LibraryFilter.Is(filterType, c.PlantTypeName)
                         && LibraryFilter.Is(filterOccurance, c.OccuranceName)
@@ -255,21 +190,10 @@
     private void ClearFilters() =>
         filterType = filterOccurance = filterMonth = filterPoison = null;
 
-    /// <summary>Piktogram typu rośliny – po nazwie typu ze słownika.</summary>
-    private static string TypeIcon(string? typeName)
-    {
-        var name = typeName?.ToLower(Polish) ?? "";
-
-        if (name.Contains("grzyb")) return "🍄";
-        if (name.Contains("drzew")) return "🌳";
-        if (name.Contains("zioł") || name.Contains("ziel")) return "🌿";
-
-        return "🌱";
-    }
-
     protected override async Task OnInitializedAsync()
     {
         await LoadPlantsAsync();
+        await OnShowPendingChangedAsync();   // przełącznik jest domyślnie włączony
     }
 
     private async Task LoadPlantsAsync()
@@ -293,7 +217,7 @@
         }
     }
 
-    // zgłoszenia pobieramy dopiero przy pierwszym włączeniu przełącznika
+    // zgłoszenia pobieramy raz – przy starcie strony (przełącznik domyślnie włączony)
     private async Task OnShowPendingChangedAsync()
     {
         if (!showPending || pendingLoaded)
@@ -308,6 +232,7 @@
         try
         {
             pendingPlants = await PlantApiService.GetPendingPlantsAsync();
+            pendingThumbnails = await PendingPictures.PlantSubmissionThumbnailsAsync();
             pendingLoaded = true;
         }
         catch (Exception ex)
@@ -322,14 +247,4 @@
         }
     }
 
-    private sealed record LibraryCard(
-        int Id,
-        string PolishName,
-        string? LatinName,
-        string? PlantTypeName,
-        string? MonthOfHarvestName,
-        string? OccuranceName,
-        bool IsPoisonous,
-        string? ThumbnailUrl,
-        bool IsPending);
 }

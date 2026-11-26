@@ -1,4 +1,4 @@
-﻿@using static Microsoft.AspNetCore.Components.Web.RenderMode
+@using static Microsoft.AspNetCore.Components.Web.RenderMode
 
 <!DOCTYPE html>
 <html lang="pl">
@@ -18,7 +18,7 @@
 
             function apply(theme) {
                 root.setAttribute("data-theme", theme);
-                root.setAttribute("data-bs-theme", theme);   // Bootstrap też przechodzi w ciemny
+                root.setAttribute("data-bs-theme", theme);   // Bootstrap przechodzi w ciemny
             }
 
             var saved = null;
@@ -28,7 +28,7 @@
                 ? saved
                 : (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"));
 
-            // przycisk z atrybutem data-theme-toggle (MainLayout) – działa na każdej stronie
+            // przycisk z atrybutem data-theme-toggle (MainLayout) – na każdej stronie
             document.addEventListener("click", function (e) {
                 if (!e.target.closest("[data-theme-toggle]")) return;
 
@@ -81,6 +81,7 @@
 
     <link rel="stylesheet" href="@Assets["lib/bootstrap/dist/css/bootstrap.min.css"]" />
     <link rel="stylesheet" href="@Assets["app.css"]" />
+    <link rel="stylesheet" href="@Assets["theme.css"]" />
     <link rel="stylesheet" href="@Assets["HerbRecognition_Web.styles.css"]" />
     <link rel="stylesheet" href="@Assets["mobile.css"]" />
     <link rel="stylesheet" href="@Assets["dark.css"]" />

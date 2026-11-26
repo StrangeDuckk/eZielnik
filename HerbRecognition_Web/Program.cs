@@ -43,10 +43,13 @@ builder.Services.AddScoped<AdminPictureApiService>();
 builder.Services.AddScoped<ProductApiService>();
 builder.Services.AddScoped<AdminProductApiService>();
 
+// miniatury zgłoszeń na kafelkach – tylko dla zalogowanego admina
+builder.Services.AddScoped<PendingPictureService>();
+
 // =====================================================================
 //  Klucze Data Protection w trwałym folderze
-//  Bez tego każde wdrożenie tworzyłoby nowe klucze, a otwarte formularze
-//  i połączenia użytkowników przestawałyby działać.
+//  każde wdrożenie ma stare klucze, otwarte formularze
+//  i połączenia użytkowników nadal dzialaja w trakcie wdrozenia.
 // =====================================================================
 
 var keysPath = builder.Configuration["DataProtection:KeysPath"];
@@ -60,7 +63,7 @@ if (!string.IsNullOrWhiteSpace(keysPath))
 
 // =====================================================================
 //  Za serwerem proxy (Traefik w Coolify obsługuje HTTPS)
-//  Dzięki temu aplikacja wie, że użytkownik przyszedł przez https.
+//  aplikacja wie, że użytkownik przyszedł przez https.
 // =====================================================================
 
 builder.Services.Configure<ForwardedHeadersOptions>(options =>
@@ -74,11 +77,11 @@ builder.Services.Configure<ForwardedHeadersOptions>(options =>
 
 var app = builder.Build();
 
-app.UseForwardedHeaders();   // musi być pierwsze
+app.UseForwardedHeaders();   
 
 if (app.Environment.IsDevelopment())
 {
-    app.UseHttpsRedirection();   // na serwerze przekierowanie na HTTPS robi Traefik
+    app.UseHttpsRedirection();   // na serwerze przekierowanie na HTTPS przez Traefik
 }
 else
 {
@@ -91,7 +94,7 @@ app.UseAntiforgery();
 
 app.MapStaticAssets();
 
-// pliki zdjęć z API -> przeglądarka (API nie jest dostępne z internetu)
+// pliki zdjęć z API -> przeglądarka (API tylko wewnetrzna siec)
 app.MapGet("/media/pictures/{fileName}", async (
     string fileName, PictureApiService api, HttpContext ctx, CancellationToken ct) =>
 {

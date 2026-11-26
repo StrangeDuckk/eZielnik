@@ -99,14 +99,42 @@ namespace HerbRecognition_Web.Communication.Services
             new FilterSelect.Option(Poisonous, "Trujące")
         };
 
-        /// <summary>Roślina bez wpisu o trujących właściwościach = nietrująca.
-        /// Wpis w stylu "nietrująca" / "bezpieczna" też traktujemy jako bezpieczny.</summary>
+        // objawy zatrucia: od bólu brzucha / nudności w górę aż do śmierci
+        private static readonly string[] PoisonWords =
+        {
+            "nudno", "wymiot", "biegunk", "brzuch", "zatru", "toksycz", "trując", "trujac",
+            "zawrot", "duszno", "oddech", "oddych", "narząd", "narzad", "nerek", "wątrob", "watrob",
+            "serc", "parali", "drgawk", "śmier", "smier", "zgon",
+            "nausea", "vomit", "diarr", "stomach", "toxic", "poison", "dizz", "breath",
+            "organ damage", "organs", "paraly", "death", "fatal"
+        };
+
+        // tylko podrażnienie / uczulenie – to ostrzeżenie, nie "trująca"
+        private static readonly string[] IrritationWords =
+        {
+            "alerg", "uczul", "podrażn", "podrazn", "irritat", "allerg"
+        };
+
+        /// <summary>
+        /// Czy pokazać "☠ Trująca". Reguła:
+        /// - brak wpisu = nietrująca,
+        /// - opis objawów zatrucia (ból brzucha, nudności, wymioty … aż do śmierci) = trująca,
+        /// - samo podrażnienie / reakcja alergiczna = nie (szczegóły są w ostrzeżeniu na stronie rośliny),
+        /// - opis, którego nie rozpoznajemy = trująca (bezpieczniej ostrzec niż przemilczeć).
+        /// </summary>
         public static bool IsPoisonous(string? poisonabilityDescription)
         {
             if (string.IsNullOrWhiteSpace(poisonabilityDescription)) return false;
 
             var text = poisonabilityDescription.ToLower(Polish);
-            return !(text.Contains("nietruj") || text.Contains("bezpieczn") || text.StartsWith("brak"));
+
+            if (text.Contains("nietruj") || text.Contains("bezpieczn") || text.StartsWith("brak"))
+                return false;
+
+            if (PoisonWords.Any(text.Contains))
+                return true;
+
+            return !IrritationWords.Any(text.Contains);
         }
 
         public static bool MatchesPoison(string? wanted, bool isPoisonous) => wanted switch

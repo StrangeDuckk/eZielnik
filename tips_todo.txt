@@ -1,3 +1,6 @@
+- update cssa wg prowadzacego od ick
+- usunac "czesc rosliny" powtarzajaca sie bez powodu przy pojedynczej roslinie
+
 - testy jednostkowe bazy i api
 
 ------------------------------------- jesli starczy czasu: -------------------------

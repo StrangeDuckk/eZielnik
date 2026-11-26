@@ -1,10 +1,12 @@
-﻿@page "/search"
+@page "/search"
 
 @using System.Globalization
 @using HerbRecognition_Web.Communication.DTOs
 @using HerbRecognition_Web.Communication.Services
 
 @inject PlantApiService PlantApiService
+@inject AdminAuthService Auth
+@inject PendingPictureService PendingPictures
 
 <PageTitle>Wyniki wyszukiwania</PageTitle>
 
@@ -12,7 +14,7 @@
 
     <section class="plants-header">
         <div>
-            <span class="section-label">HERB RECOGNITION</span>
+            <span class="section-label">eZielnik</span>
 
             <h1>Wyniki wyszukiwania</h1>
 
@@ -96,64 +98,8 @@
 
             @foreach (var card in Cards)
             {
-                <article class="plant-card @(card.IsPending ? "pending" : "")">
-
-                    <div class="plant-card-content">
-
-                        <div class="plant-card-top">
-
-                            <div class="plant-pills">
-                                <span class="plant-type">
-                                    @(card.PlantTypeName ?? "Unknown")
-                                </span>
-
-                                @if (!string.IsNullOrEmpty(card.MonthOfHarvestName))
-                                {
-                                    <span class="plant-type plant-month">
-                                        Zbiór: @card.MonthOfHarvestName
-                                    </span>
-                                }
-
-                                @if (card.IsPending)
-                                {
-                                    <span class="plant-type plant-pending">Niezweryfikowana</span>
-                                }
-                            </div>
-
-                            <span class="plant-id">
-                                @(card.IsPending ? $"Zgłoszenie #{card.Id}" : $"#{card.Id}")
-                            </span>
-
-                        </div>
-
-                        <h2>@card.PolishName</h2>
-
-                        <p class="plant-name">@card.Name</p>
-
-                        <p class="plant-latin">@card.LatinName</p>
-
-                        @if (!string.IsNullOrWhiteSpace(card.Subriquet))
-                        {
-                            <p class="plant-subriquet">„@card.Subriquet”</p>
-                        }
-
-                        @if (card.IsPending)
-                        {
-                            <p class="plant-card-note">
-                                Szczegóły będą dostępne po zweryfikowaniu zgłoszenia.
-                            </p>
-                        }
-                        else
-                        {
-                            <a href="@($"/plants/{card.Id}")" class="plant-card-link">
-                                Zobacz szczegóły
-                                <span>→</span>
-                            </a>
-                        }
-
-                    </div>
-
-                </article>
+                @* ten sam kafelek co w bibliotece roślin *@
+                <HerbRecognition_Web.Components.Shared.PlantCard @key="(card.IsPending, card.Id)" Item="card" ShowEdit="Auth.IsLoggedIn" />
             }
 
             <div class="plant-card-content">
@@ -172,8 +118,9 @@
     [SupplyParameterFromQuery(Name = "name")]
     private string? SearchName { get; set; }
 
-    private List<GetPlantDTO> plants = new();
+    private List<PlantCardItem> plants = new();
     private List<PendingPlantPreviewDTO> pendingPlants = new();
+    private Dictionary<int, string> pendingThumbnails = new();   // admin: miniatury zgłoszeń
 
     private bool isLoading = true;
     private string? errorMessage;
@@ -189,15 +136,17 @@
         StringComparer.Create(new CultureInfo("pl-PL"), ignoreCase: true);
 
     // zatwierdzone + (opcjonalnie) zgłoszenia, wspólnie posortowane po nazwie polskiej
-    private IEnumerable<SearchCard> Cards =>
-        plants.Select(p => new SearchCard(
-                p.Id, p.Name, p.PolishName, p.LatinName, p.Subriquet,
-                p.PlantTypeDTO?.Name, p.MonthOfHarvestName, IsPending: false))
+    private IEnumerable<PlantCardItem> Cards =>
+        plants
             .Concat(showPending
-                ? pendingPlants.Select(p => new SearchCard(
-                    p.Id, p.Name, p.PolishName, p.LatinName, p.Subriquet,
-                    p.PlantTypeName, p.MonthOfHarvestName, IsPending: true))
-                : Enumerable.Empty<SearchCard>())
+                ? pendingPlants.Select(p => new PlantCardItem(
+                    p.Id, p.PolishName, p.LatinName,
+                    p.PlantTypeName, p.MonthOfHarvestName,
+                    p.OccuranceName,
+                    LibraryFilter.IsPoisonous(p.PoisonabilityDescription),
+                    pendingThumbnails.GetValueOrDefault(p.Id),
+                    IsPending: true))
+                : Enumerable.Empty<PlantCardItem>())
             .OrderBy(c => c.PolishName, PolishOrder);
 
     protected override async Task OnParametersSetAsync()
@@ -223,7 +172,32 @@
 
         try
         {
-            plants = await PlantApiService.GetPlantsByNameAsync(SearchName);
+            // wyszukiwanie daje Id pasujących roślin, a dane kafelka (miniatura, występowanie,
+            // trujące) bierzemy z listy biblioteki – dzięki temu kafelek jest identyczny jak w /plants
+            var found = await PlantApiService.GetPlantsByNameAsync(SearchName);
+
+            if (found.Count > 0)
+            {
+                var previews = (await PlantApiService.GetAllPlantsAsync()).ToDictionary(p => p.Id);
+
+                plants = found
+                    .Select(f => previews.TryGetValue(f.Id, out var p)
+                        ? new PlantCardItem(
+                            p.Id, p.PolishName, p.LatinName,
+                            p.PlantTypeDTO?.Name, p.MonthOfHarvestName,
+                            p.Occurance?.Occurance,
+                            LibraryFilter.IsPoisonous(p.PoisonabilityDescription),
+                            SafeUrl.Image(p.MainThumbnailUrl),
+                            IsPending: false)
+                        : new PlantCardItem(
+                            f.Id, f.PolishName, f.LatinName,
+                            f.PlantTypeDTO?.Name, f.MonthOfHarvestName,
+                            null,
+                            LibraryFilter.IsPoisonous(f.PoisonabilityDescription),
+                            null,
+                            IsPending: false))
+                    .ToList();
+            }
         }
         catch (Exception ex)
         {
@@ -259,6 +233,7 @@
         try
         {
             pendingPlants = await PlantApiService.GetPendingPlantsAsync(SearchName);
+            pendingThumbnails = await PendingPictures.PlantSubmissionThumbnailsAsync();
             pendingLoadedFor = SearchName;
         }
         catch (Exception ex)
@@ -272,15 +247,4 @@
             isLoadingPending = false;
         }
     }
-
-    private sealed record SearchCard(
-        int Id,
-        string Name,
-        string PolishName,
-        string? LatinName,
-        string? Subriquet,
-        string? PlantTypeName,
-        string? MonthOfHarvestName,
-        bool IsPending);
-}
 }

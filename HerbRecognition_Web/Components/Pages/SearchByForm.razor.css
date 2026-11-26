@@ -1,4 +1,4 @@
-﻿
+
 /* ---------- nagłówek wyników ---------- */
 .search-results {
     margin-top: 40px;
@@ -7,7 +7,7 @@
 .search-results-title {
     margin: 0;
     color: #1b2a21;
-    font-size: 1.75rem;
+    font-size: var(--fs-xl);
     outline: none;
     scroll-margin-top: 24px;
 }
@@ -17,7 +17,7 @@
     padding-bottom: 16px;
     border-bottom: 1px solid #dfe5e1;
     color: #7a857f;
-    font-size: 0.9rem;
+    font-size: var(--fs-sm);
 }
 
 /* ---------- siatka kart ---------- */
@@ -90,7 +90,7 @@
     border-radius: 999px;
     background: #f6faf8;
     color: #3d4a43;
-    font-size: 0.78rem;
+    font-size: var(--fs-xs);
     font-weight: 600;
     white-space: nowrap;
 }
@@ -104,7 +104,7 @@
 .plant-id {
     flex: 0 0 auto;
     color: #9aa39e;
-    font-size: 0.8rem;
+    font-size: var(--fs-xs);
     font-weight: 600;
     white-space: nowrap;
 }
@@ -113,7 +113,7 @@
 .match-badge {
     padding: 3px 10px;
     border-radius: 999px;
-    font-size: 0.85rem;
+    font-size: var(--fs-sm);
     font-weight: 700;
     letter-spacing: 0.01em;
 }
@@ -137,27 +137,27 @@
 .plant-card h2 {
     margin: 0;
     color: #1b2a21;
-    font-size: 1.3rem;
+    font-size: var(--fs-lg);
     line-height: 1.25;
 }
 
 .plant-name {
     margin: 4px 0 0;
     color: #3d4a43;
-    font-size: 0.95rem;
+    font-size: var(--fs-base);
 }
 
 .plant-latin {
     margin: 2px 0 0;
     color: #7a857f;
-    font-size: 0.9rem;
+    font-size: var(--fs-sm);
     font-style: italic;
 }
 
 .plant-subriquet {
     margin: 8px 0 0;
     color: #7a857f;
-    font-size: 0.85rem;
+    font-size: var(--fs-sm);
     line-height: 1.4;
 }
 
@@ -185,7 +185,7 @@
 .match-details {
     margin: 6px 0 0;
     color: #7a857f;
-    font-size: 0.8rem;
+    font-size: var(--fs-xs);
 }
 
 /* ---------- stopka karty ---------- */
@@ -199,7 +199,7 @@
     border: 1px solid #2f6243;
     border-radius: 8px;
     color: #2f6243;
-    font-size: 0.9rem;
+    font-size: var(--fs-sm);
     font-weight: 600;
     text-decoration: none;
     transition: background 0.2s ease, color 0.2s ease;
@@ -221,7 +221,7 @@
 .plant-card-note {
     margin: 16px 0 0;
     color: #9a6a12;
-    font-size: 0.85rem;
+    font-size: var(--fs-sm);
 }
 
 /* ---------- brak wyników / pusty formularz ---------- */
@@ -236,7 +236,7 @@
     .plants-status h2 {
         margin: 0 0 8px;
         color: #1b2a21;
-        font-size: 1.25rem;
+        font-size: var(--fs-lg);
     }
 
     .plants-status p {
@@ -273,6 +273,6 @@
     }
 
     .search-results-title {
-        font-size: 1.5rem;
+        font-size: var(--fs-xl);
     }
 }

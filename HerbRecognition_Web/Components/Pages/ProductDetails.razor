@@ -134,19 +134,20 @@
                                     }
                                 </div>
                             </div>
+
+                            @* numer zawsze w lewej kolumnie, na dole *@
+                            <span class="pd-id">#@product.Id</span>
                         </div>
 
-                        <div class="pd-head-meta">
-                            <span class="pd-id">#@product.Id</span>
-
-                            @* tylko wygoda – ochroną są strony admina i API (JWT z rolą Admin) *@
-                            @if (Auth.IsLoggedIn)
-                            {
+                        @* tylko wygoda – ochroną są strony admina i API (JWT z rolą Admin) *@
+                        @if (Auth.IsLoggedIn)
+                        {
+                            <div class="pd-head-meta">
                                 <a href="@($"/admin/products/{product.Id}")" class="prd-edit">
                                     <span aria-hidden="true">✎</span> Edytuj
                                 </a>
-                            }
-                        </div>
+                            </div>
+                        }
                     </section>
 
                     @* ---------- przeciwwskazania: pasek ostrzegawczy ---------- *@

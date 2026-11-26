@@ -1,4 +1,4 @@
-﻿@page "/plants/{Id:int}"
+@page "/plants/{Id:int}"
 
 @using HerbRecognition_Web.Communication.DTOs
 @using HerbRecognition_Web.Communication.Services
@@ -7,6 +7,7 @@
 @inject PlantApiService PlantApiService
 @inject AdminAuthService Auth
 @inject ProductApiService ProductApi
+@inject PendingPictureService PendingPictures
 
 <PageTitle>
     @(plant is null ? "Szczegóły rośliny" : plant.PolishName)
@@ -114,9 +115,16 @@
                 @* ---------- nagłówek + podstawowe informacje ---------- *@
                 <section class="pd-head">
                     <div class="pd-head-main">
-                        <div class="plant-type-badge">
-                            <span class="pd-type-icon" aria-hidden="true">@typeIcon</span>
-                            @(plant.PlantTypeDTO?.Name ?? "Nieznany typ")
+                        <div class="pd-badges">
+                            <div class="plant-type-badge">
+                                <span class="pd-type-icon" aria-hidden="true">@typeIcon</span>
+                                @(plant.PlantTypeDTO?.Name ?? "Nieznany typ")
+                            </div>
+
+                            @if (isPoisonous)
+                            {
+                                <div class="plant-type-badge pd-poison-badge" title="Roślina trująca – szczegóły poniżej">☠ Trująca</div>
+                            }
                         </div>
 
                         <h1>@plant.PolishName</h1>
@@ -128,35 +136,40 @@
                         {
                             <p class="plant-subriquet">„@plant.Subriquet”</p>
                         }
+
+                        @* numer zawsze w lewej kolumnie, na dole *@
+                        <span class="pd-id">#@plant.Id</span>
                     </div>
 
                     <div class="pd-head-side">
-                        <div class="pd-head-meta">
-                            <span class="pd-id">#@plant.Id</span>
-
-                            @* tylko wygoda – ochroną są strony admina i API (JWT z rolą Admin) *@
-                            @if (Auth.IsLoggedIn)
-                            {
-                                <a href="@($"/admin/plants/{plant.Id}")" class="plant-card-edit">
+                        @* tylko wygoda – ochroną są strony admina i API (JWT z rolą Admin) *@
+                        @if (Auth.IsLoggedIn)
+                        {
+                            <div class="pd-head-meta">
+                                <a href="@($"/admin/plants/{plant.Id}")" class="pd-pill-button">
                                     <span aria-hidden="true">✎</span> Edytuj
                                 </a>
-                            }
-                            <a href="@($"/plants/{plant.Id}/add-product")" class="plant-card-edit">＋ Dodaj przepis</a>
-                        </div>
+                            </div>
+                        }
 
                         <div class="pd-facts">
                             @Fields(basicFields)
                         </div>
+
+                        @* pod informacjami, wewnątrz nagłówka *@
+                        <a href="@($"/plants/{plant.Id}/add-product")" class="pd-pill-button is-primary pd-add-product">
+                            <span aria-hidden="true">＋</span> Dodaj przepis
+                        </a>
                     </div>
                 </section>
 
                 @* ---------- toksyczność: pasek na całą szerokość ---------- *@
                 @if (plant.PoisonabilityDescription is not null)
                 {
-                    <section class="pd-toxic">
-                        <span class="pd-toxic-icon" aria-hidden="true">⚠</span>
+                    <section class="pd-toxic @(isPoisonous ? "is-poison" : "")">
+                        <span class="pd-toxic-icon" aria-hidden="true">@(isPoisonous ? "☠" : "⚠")</span>
                         <div>
-                            <h2>Toksyczność</h2>
+                            <h2>@(isPoisonous ? "Roślina trująca" : "Ostrzeżenie")</h2>
                             <p>@plant.PoisonabilityDescription</p>
                         </div>
                     </section>
@@ -281,6 +294,9 @@
     private List<PartView> lowerParts = new();
     private string typeIcon = "🌱";
 
+    // "☠ Trująca" – od bólu brzucha / nudności w górę; samo uczulenie = tylko ostrzeżenie
+    private bool isPoisonous => LibraryFilter.IsPoisonous(plant?.PoisonabilityDescription);
+
     private bool isLoading = true;
     private string? errorMessage;
 
@@ -348,6 +364,7 @@
                 {
                     products = await ProductApi.GetProductsAsync(Id);
                     pendingProducts = await ProductApi.GetPendingProductsAsync(Id);
+                    await PendingPictures.ApplyToProductSubmissionsAsync(pendingProducts);   // admin: podgląd zdjęcia
                 }
                 catch (Exception ex)
                 {

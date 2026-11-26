@@ -1,4 +1,4 @@
-﻿.plant-details-page {
+.plant-details-page {
     min-height: 100vh;
     background: #f6f7f2;
     color: #26352b;
@@ -22,7 +22,7 @@
     margin-bottom: 28px;
     color: #55705b;
     text-decoration: none;
-    font-size: 0.95rem;
+    font-size: var(--fs-base);
     font-weight: 600;
     transition: color 0.2s ease, transform 0.2s ease;
 }
@@ -40,7 +40,7 @@
 .pd-anatomy {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
-    gap: 20px;
+    gap: var(--gap-card);   /* ten sam odstęp w pionie i w poziomie */
 }
 
     .pd-anatomy > * {
@@ -50,7 +50,7 @@
 .pd-parts {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: var(--gap-card);
 }
 
 
@@ -61,7 +61,7 @@
 .pd-head {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
-    gap: 24px;
+    gap: var(--gap-card);
     padding: 30px 26px;
     background: radial-gradient(circle at 90% 10%, rgba(130, 164, 135, 0.18), transparent 40%), linear-gradient(135deg, #e7eee5 0%, #f2f4ed 100%);
     border: 1px solid #dce5da;
@@ -69,19 +69,31 @@
     box-shadow: 0 18px 45px rgba(46, 66, 51, 0.08);
 }
 
+/* typ rośliny + "Trująca" */
+.pd-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
 .plant-type-badge {
     display: inline-flex;
     align-items: center;
     gap: 6px;
     padding: 7px 14px;
-    margin-bottom: 18px;
     border-radius: 999px;
     background: #d4e3d2;
     color: #36563d;
-    font-size: 0.75rem;
+    font-size: var(--fs-2xs);
     font-weight: 800;
     letter-spacing: 0.08em;
     text-transform: uppercase;
+}
+
+.pd-poison-badge {
+    background: #fbe3df;
+    color: #9c3b2f;
 }
 
 .pd-type-icon {
@@ -92,7 +104,7 @@
 .pd-head h1 {
     margin: 0;
     color: #24372a;
-    font-size: clamp(2.2rem, 5vw, 3.6rem);
+    font-size: var(--fs-h1);
     line-height: 1;
     letter-spacing: -0.04em;
     font-weight: 750;
@@ -102,14 +114,14 @@
 .plant-common-name {
     margin: 14px 0 0;
     color: #53675a;
-    font-size: 1.2rem;
+    font-size: var(--fs-lg);
     font-weight: 500;
 }
 
 .plant-latin-name {
     margin: 6px 0 0;
     color: #718074;
-    font-size: 1.05rem;
+    font-size: var(--fs-base);
     font-style: italic;
 }
 
@@ -120,35 +132,77 @@
     background: rgba(255, 255, 255, 0.65);
     border-radius: 10px;
     color: #526456;
-    font-size: 0.95rem;
+    font-size: var(--fs-base);
+}
+
+/* lewa kolumna nagłówka: numer przyklejony do dołu */
+.pd-head-main {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    min-width: 0;
 }
 
 .pd-head-side {
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: var(--gap-inner);
 }
 
 .pd-head-meta {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
+    justify-content: flex-end;
 }
 
 .pd-id {
+    margin-top: auto;
+    padding-top: 20px;
     color: #849287;
-    font-size: 0.85rem;
+    font-size: var(--fs-sm);
     font-weight: 700;
 }
 
-/* "Edytuj" – w bibliotece jest pozycjonowany na zdjęciu, tu zwykły */
-.pd-head .plant-card-edit {
-    position: static;
+/* przyciski w pastylce: "Edytuj", "Dodaj przepis" */
+.pd-pill-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border: 1px solid #b7c7b7;
+    border-radius: 999px;
+    background: #ffffff;
+    color: #315c3e;
+    font-size: var(--fs-sm);
+    font-weight: 700;
+    line-height: 1.2;
+    text-decoration: none;
+    transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+    .pd-pill-button:hover,
+    .pd-pill-button:focus-visible {
+        background: #eaf0e8;
+        border-color: #52745a;
+    }
+
+    .pd-pill-button.is-primary {
+        border-color: #315c3e;
+        background: #315c3e;
+        color: #ffffff;
+    }
+
+        .pd-pill-button.is-primary:hover,
+        .pd-pill-button.is-primary:focus-visible {
+            border-color: #24372a;
+            background: #24372a;
+        }
+
+.pd-add-product {
+    align-self: flex-start;
 }
 
 .pd-facts {
-    padding: 14px 18px;
+    padding: 16px 20px;
     background: rgba(255, 255, 255, 0.72);
     border: 1px solid #dce5da;
     border-radius: 16px;
@@ -177,13 +231,34 @@
 .pd-toxic h2 {
     margin: 0 0 4px;
     color: #9a6a12;
-    font-size: 1rem;
+    font-size: var(--fs-base);
 }
 
 .pd-toxic p {
     margin: 0;
     color: #6b4a0d;
-    line-height: 1.6;
+    line-height: var(--lh-body);
+}
+
+/* roślina trująca: czerwony zamiast pomarańczowego */
+.pd-toxic.is-poison {
+    background: #fdf0ee;
+    border-color: #e7b9b2;
+}
+
+    .pd-toxic.is-poison h2 {
+        color: #9c3b2f;
+    }
+
+    .pd-toxic.is-poison p {
+        color: #7a2e25;
+    }
+
+/* telefon i tablet: ostrzeżenie na samej górze, nad zdjęciem */
+@media (max-width: 959px) {
+    .pd-toxic {
+        order: -1;
+    }
 }
 
 
@@ -195,7 +270,7 @@
     display: block;
     margin-bottom: 7px;
     color: #759078;
-    font-size: 0.7rem;
+    font-size: var(--fs-2xs);
     font-weight: 800;
     letter-spacing: 0.15em;
 }
@@ -205,13 +280,13 @@
     background: #ffffff;
     border: 1px solid #e0e6df;
     border-radius: 16px;
-    padding: 18px 20px;
+    padding: 22px 24px;
 }
 
     .pd-card h2 {
         margin: 2px 0 12px;
         color: #1d2b21;
-        font-size: 1.25rem;
+        font-size: var(--fs-lg);
         letter-spacing: -0.02em;
     }
 
@@ -222,8 +297,8 @@
 .pd-field {
     display: grid;
     grid-template-columns: minmax(110px, 42%) minmax(0, 1fr);
-    gap: 12px;
-    padding: 9px 0;
+    gap: 14px;
+    padding: 11px 0;
     border-top: 1px solid #eef2ed;
 }
 
@@ -238,13 +313,13 @@
 
     .pd-field dt {
         color: #7a857c;
-        font-size: 0.82rem;
+        font-size: var(--fs-xs);
     }
 
     .pd-field dd {
         margin: 0;
         color: #1d2b21;
-        font-size: 0.92rem;
+        font-size: var(--fs-base);
         font-weight: 600;
         overflow-wrap: anywhere; /* nic nie wychodzi poza ekran */
     }
@@ -316,7 +391,7 @@
     border-radius: 20px;
     background: rgba(255, 255, 255, 0.94);
     color: #536158;
-    font-size: 0.78rem;
+    font-size: var(--fs-xs);
     font-weight: 700;
 }
 
@@ -417,8 +492,7 @@
     .pd-anatomy {
         --pd-top-offset: 96px; /* wysokość górnego paska nawigacji + margines */
         grid-template-columns: minmax(0, 1fr) minmax(340px, 1.1fr) minmax(0, 1fr);
-        column-gap: 40px;
-        row-gap: 28px;
+        gap: var(--gap-card);   /* ten sam odstęp w pionie i w poziomie */
         grid-template-areas:
             "head  head  head"
             "upper photo lower";
@@ -437,7 +511,7 @@
         grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
         gap: 40px;
         padding: 40px 44px;
-        align-items: start;
+        align-items: stretch;   /* lewa kolumna na całą wysokość – numer ląduje na dole */
     }
 
     .pd-toxic {
@@ -477,16 +551,16 @@
         content: "";
         position: absolute;
         top: 40px;
-        width: 40px;
+        width: var(--gap-card);
         border-top: 1px dashed #9db59f;
     }
 
     .pd-upper .pd-card::after {
-        right: -41px;
+        right: calc(-1 * var(--gap-card) - 1px);
     }
 
     .pd-lower .pd-card::after {
-        left: -41px;
+        left: calc(-1 * var(--gap-card) - 1px);
     }
 }
 
@@ -506,7 +580,7 @@
     .section-heading h2 {
         margin: 0;
         color: #2c3d31;
-        font-size: 1.75rem;
+        font-size: var(--fs-xl);
         font-weight: 700;
         letter-spacing: -0.025em;
     }
@@ -514,13 +588,13 @@
 .section-note {
     margin: -4px 0 16px;
     color: #7a857f;
-    font-size: 0.9rem;
+    font-size: var(--fs-sm);
 }
 
 .similar-plants {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 16px;
+    gap: var(--gap-card);
 }
 
 .similar-plant-card {
@@ -548,13 +622,13 @@
     .similar-plant-card h3 {
         margin: 0 0 5px;
         color: #304435;
-        font-size: 1rem;
+        font-size: var(--fs-base);
     }
 
     .similar-plant-card p {
         margin: 0;
         color: #89948b;
-        font-size: 0.85rem;
+        font-size: var(--fs-sm);
         font-style: italic;
     }
 
@@ -650,7 +724,7 @@
     }
 
     .section-heading h2 {
-        font-size: 1.5rem;
+        font-size: var(--fs-xl);
     }
 }
 

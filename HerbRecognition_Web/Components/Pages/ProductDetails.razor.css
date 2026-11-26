@@ -23,7 +23,7 @@
     margin-bottom: 28px;
     color: #55705b;
     text-decoration: none;
-    font-size: 0.95rem;
+    font-size: var(--fs-base);
     font-weight: 600;
     transition: color 0.2s ease, transform 0.2s ease;
 }
@@ -39,7 +39,7 @@
 .prd-layout {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
-    gap: 20px;
+    gap: var(--gap-card);   /* ten sam odstęp w pionie i w poziomie */
 }
 
     .prd-layout > * {
@@ -49,7 +49,7 @@
 .prd-main {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: var(--gap-card);
 }
 
 
@@ -58,7 +58,7 @@
 .pd-head {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
+    align-items: stretch;   /* lewa kolumna na całą wysokość – numer ląduje na dole */
     gap: 20px;
     padding: 30px 28px;
     background: radial-gradient(circle at 90% 10%, rgba(130, 164, 135, 0.18), transparent 40%),
@@ -69,6 +69,9 @@
 }
 
 .pd-head-main {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
     min-width: 0;
 }
 
@@ -77,11 +80,11 @@
     align-items: center;
     gap: 6px;
     padding: 7px 14px;
-    margin-bottom: 18px;
+    margin-bottom: 20px;
     border-radius: 999px;
     background: #d4e3d2;
     color: #36563d;
-    font-size: 0.75rem;
+    font-size: var(--fs-2xs);
     font-weight: 800;
     letter-spacing: 0.08em;
     text-transform: uppercase;
@@ -95,7 +98,7 @@
 .pd-head h1 {
     margin: 0;
     color: #24372a;
-    font-size: clamp(2rem, 4.5vw, 3.2rem);
+    font-size: var(--fs-h1);
     line-height: 1.05;
     letter-spacing: -0.035em;
     font-weight: 750;
@@ -110,19 +113,25 @@
     flex: 0 0 auto;
 }
 
+/* numer zawsze w lewej kolumnie, na dole */
 .pd-id {
+    margin-top: auto;
+    padding-top: 20px;
     color: #849287;
-    font-size: 0.85rem;
+    font-size: var(--fs-sm);
     font-weight: 700;
 }
 
 .prd-edit {
-    padding: 6px 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
     border: 1px solid #b7c7b7;
     border-radius: 20px;
     background: #ffffff;
     color: #315c3e;
-    font-size: 0.8rem;
+    font-size: var(--fs-xs);
     font-weight: 700;
     text-decoration: none;
 }
@@ -134,31 +143,33 @@
 .prd-plants {
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    margin-top: 18px;
+    gap: 10px;
+    margin-top: 22px;
 }
 
 .prd-label {
     color: #759078;
-    font-size: 0.72rem;
+    font-size: var(--fs-2xs);
     font-weight: 800;
     letter-spacing: 0.12em;
     text-transform: uppercase;
 }
 
+/* pastylki: więcej powietrza w środku i między nimi */
 .prd-chips {
     display: flex;
     flex-wrap: wrap;
-    gap: 6px;
+    gap: 10px;
 }
 
 .prd-chip {
-    padding: 5px 12px;
+    padding: 7px 15px;
+    line-height: 1.3;
     border: 1px solid #c9e0d2;
     border-radius: 999px;
     background: rgba(255, 255, 255, 0.75);
     color: #2f6c4d;
-    font-size: 0.88rem;
+    font-size: var(--fs-sm);
     font-weight: 600;
     text-decoration: none;
     overflow-wrap: anywhere;
@@ -200,15 +211,19 @@ a.prd-chip:hover {
 .pd-toxic h2 {
     margin: 0 0 6px;
     color: #9a6a12;
-    font-size: 1rem;
+    font-size: var(--fs-base);
 }
 
 .prd-list {
     margin: 0;
     padding-left: 18px;
     color: #6b4a0d;
-    line-height: 1.6;
+    line-height: var(--lh-body);
 }
+
+    .prd-list li + li {
+        margin-top: 4px;
+    }
 
 
 /* ---------- karty ---------- */
@@ -217,7 +232,7 @@ a.prd-chip:hover {
     display: block;
     margin-bottom: 7px;
     color: #759078;
-    font-size: 0.7rem;
+    font-size: var(--fs-2xs);
     font-weight: 800;
     letter-spacing: 0.15em;
 }
@@ -227,13 +242,13 @@ a.prd-chip:hover {
     background: #ffffff;
     border: 1px solid #e0e6df;
     border-radius: 16px;
-    padding: 20px 22px;
+    padding: 22px 24px;
 }
 
     .pd-card h2 {
         margin: 2px 0 14px;
         color: #1d2b21;
-        font-size: 1.25rem;
+        font-size: var(--fs-lg);
         letter-spacing: -0.02em;
     }
 
@@ -244,8 +259,8 @@ a.prd-chip:hover {
 .pd-field {
     display: grid;
     grid-template-columns: minmax(120px, 35%) minmax(0, 1fr);
-    gap: 12px;
-    padding: 10px 0;
+    gap: 16px;
+    padding: 12px 0;
     border-top: 1px solid #eef2ed;
 }
 
@@ -266,7 +281,7 @@ a.prd-chip:hover {
     .pd-field dd {
         margin: 0;
         color: #536158;
-        font-size: 0.92rem;
+        font-size: var(--fs-base);
         line-height: 1.55;
         overflow-wrap: anywhere;
     }
@@ -278,21 +293,21 @@ a.prd-chip:hover {
 .prd-group {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 10px;
 }
 
     .prd-group + .prd-group {
-        margin-top: 16px;
+        margin-top: 22px;
     }
 
 .prd-recipe-card {
-    margin-top: 20px;
+    margin-top: var(--gap-card);
 }
 
 /* przepis: zachowane nowe linie z formularza */
 .prd-recipe {
     color: #26352b;
-    font-size: 1.02rem;
+    font-size: var(--fs-base);
     line-height: 1.75;
     white-space: pre-line;
     overflow-wrap: anywhere;
@@ -301,7 +316,7 @@ a.prd-chip:hover {
 .prd-disclaimer {
     margin: 16px 0 0;
     color: #849287;
-    font-size: 0.82rem;
+    font-size: var(--fs-xs);
 }
 
 
@@ -361,7 +376,7 @@ a.prd-chip:hover {
     border-radius: 20px;
     background: rgba(255, 255, 255, 0.94);
     color: #536158;
-    font-size: 0.78rem;
+    font-size: var(--fs-xs);
     font-weight: 700;
 }
 
@@ -480,7 +495,7 @@ a.prd-chip:hover {
     .prd-layout.has-gallery {
         --pd-top-offset: 96px;
         grid-template-columns: minmax(340px, 1fr) minmax(0, 1.15fr);
-        column-gap: 40px;
+        gap: var(--gap-card);
         align-items: start;
     }
 

@@ -61,7 +61,7 @@ a {
     align-items: center;
     gap: 10px;
     text-decoration: none;
-    font-size: 1.1rem;
+    font-size: var(--fs-md);
     font-weight: 700;
     letter-spacing: -0.02em;
 }
@@ -79,7 +79,7 @@ a {
 .nav-link {
     text-decoration: none;
     color: #536158;
-    font-size: 0.95rem;
+    font-size: var(--fs-base);
     font-weight: 500;
     transition: color 0.2s ease;
 }
@@ -116,7 +116,7 @@ a {
 
     .footer-description h3 {
         margin: 0 0 12px;
-        font-size: 1.2rem;
+        font-size: var(--fs-lg);
     }
 
     .footer-description p {
@@ -141,7 +141,7 @@ a {
     padding: 20px 32px;
     border-top: 1px solid #344238;
     color: #8e9b91;
-    font-size: 0.85rem;
+    font-size: var(--fs-sm);
 }
 
 /* ============ przycisk do formularza ============ */
@@ -155,7 +155,7 @@ a {
     background: #365b40;
     color: #ffffff;
     text-decoration: none;
-    font-size: 0.95rem;
+    font-size: var(--fs-base);
     font-weight: 600;
     border: none;
     border-radius: 10px;
@@ -176,7 +176,7 @@ a {
         transform: translateX(3px);
     }
 
-/* ---------- uk≥ad pÛl ---------- */
+/* ---------- uk≈Çad p√≥l ---------- */
 .submission-form .submission-field {
     display: flex;
     flex-direction: column;
@@ -185,7 +185,7 @@ a {
 }
 
     .submission-form .submission-field > label:not(.switch-label) {
-        font-size: 0.875rem;
+        font-size: var(--fs-sm);
         font-weight: 600;
         color: #3d4a43;
     }
@@ -224,7 +224,7 @@ a {
             color: #7a857f;
         }
 
-    /* ---------- lista rozwijana: w≥asna strza≥ka ---------- */
+    /* ---------- lista rozwijana: w≈Çasna strza≈Çka ---------- */
     .submission-form .submission-field select {
         appearance: none;
         -webkit-appearance: none;
@@ -246,7 +246,7 @@ a {
             color: #1f2a24;
         }
 
-/* ---------- prze≥πcznik ---------- */
+/* ---------- prze≈ÇƒÖcznik ---------- */
 .submission-form .switch-label {
     position: relative;
     display: flex;
@@ -271,7 +271,7 @@ a {
         background: #f6faf8;
     }
 
-    /* ukryty, ale dostÍpny dla klawiatury i czytnikÛw ekranu */
+    /* ukryty, ale dostƒôpny dla klawiatury i czytnik√≥w ekranu */
     .submission-form .switch-label input.switch-input {
         position: absolute;
         width: 1px;
@@ -295,7 +295,7 @@ a {
         transition: background 0.2s ease;
     }
 
-        /* ga≥ka */
+        /* ga≈Çka */
         .submission-form .switch-label .switch-slider::before {
             content: "";
             position: absolute;
@@ -309,7 +309,7 @@ a {
             transition: transform 0.2s ease;
         }
 
-    /* w≥πczony */
+    /* w≈ÇƒÖczony */
     .submission-form .switch-label:has(.switch-input:checked) .switch-slider {
         background: #39815c;
     }
@@ -324,7 +324,7 @@ a {
         outline-offset: 3px;
     }
 
-/* prze≥πczniki sekcji (Czy posiada liúcie? itd.) */
+/* prze≈ÇƒÖczniki sekcji (Czy posiada li≈õcie? itd.) */
 .submission-section-toggle {
     margin: 8px 0;
 }
@@ -343,7 +343,7 @@ a {
         }
 
 .submission-form .validation-message {
-    font-size: 0.8rem;
+    font-size: var(--fs-xs);
     color: #c0392b;
 }
 
@@ -431,7 +431,7 @@ a {
         color: #39815c;
     }
 
-/* ---------- uk≥ad panelu ---------- */
+/* ---------- uk≈Çad panelu ---------- */
 .admin-header {
     display: flex;
     justify-content: space-between;
@@ -591,7 +591,7 @@ a {
 
     .admin-btn.small {
         padding: 6px 10px;
-        font-size: 0.85rem;
+        font-size: var(--fs-sm);
     }
 
 /* ---------- tabela ---------- */
@@ -607,7 +607,7 @@ a {
     .admin-table th {
         padding: 10px 12px;
         border-bottom: 1px solid #dfe5e1;
-        font-size: 0.8rem;
+        font-size: var(--fs-xs);
         font-weight: 600;
         color: #7a857f;
         text-align: left;
@@ -677,10 +677,10 @@ a {
     background: #f6faf8;
     border: 1px solid #dfe5e1;
     color: #5f6b65;
-    font-size: 0.9rem;
+    font-size: var(--fs-sm);
 }
 
-/* ---------- prze≥πcznik sekcji panelu: S≥owniki / Zg≥oszenia ---------- */
+/* ---------- prze≈ÇƒÖcznik sekcji panelu: S≈Çowniki / Zg≈Çoszenia ---------- */
 /*.admin-sections {
     display: flex;
     gap: 4px;
@@ -716,7 +716,7 @@ a {
     }*/
 
 
-/* ---------- gÛrny pasek panelu admina ---------- */
+/* ---------- g√≥rny pasek panelu admina ---------- */
 .admin-topbar {
     position: sticky;
     top: var(--admin-topbar-offset, 0px);
@@ -737,14 +737,14 @@ a {
 .admin-topbar-title {
     flex: 0 0 auto;
     color: #284631;
-    font-size: 0.8rem;
+    font-size: var(--fs-xs);
     font-weight: 700;
     letter-spacing: 0.08em;
     text-transform: uppercase;
     white-space: nowrap;
 }
 
-/* zak≥adki ñ przy wielu sekcjach przewijajπ siÍ poziomo */
+/* zak≈Çadki ‚Äì przy wielu sekcjach przewijajƒÖ siƒô poziomo */
 .admin-sections {
     display: flex;
     gap: 4px;
@@ -799,7 +799,7 @@ a {
 }
 
 
-/* ---------- lista zg≥oszeÒ ---------- */
+/* ---------- lista zg≈Çosze≈Ñ ---------- */
 .admin-content-head {
     display: flex;
     align-items: center;
@@ -817,7 +817,7 @@ a {
     border-radius: 999px;
     background: #fdf3e1;
     color: #9a6a12;
-    font-size: 0.85rem;
+    font-size: var(--fs-sm);
     font-weight: 700;
     text-align: center;
 }
@@ -830,7 +830,7 @@ a {
 
     .admin-plant-names span {
         color: #7a857f;
-        font-size: 0.85rem;
+        font-size: var(--fs-sm);
     }
 
 .admin-parts {
@@ -844,21 +844,21 @@ a {
     border-radius: 999px;
     background: #f0f6f2;
     color: #2f6c4d;
-    font-size: 0.78rem;
+    font-size: var(--fs-xs);
     font-weight: 600;
     white-space: nowrap;
 }
 
 .admin-muted {
     color: #7a857f;
-    font-size: 0.85rem;
+    font-size: var(--fs-sm);
 }
 
 .admin-row-corrupted td {
     background: #fdf2f1;
 }
 
-/* link wyglπdajπcy jak przycisk (Edytuj) */
+/* link wyglƒÖdajƒÖcy jak przycisk (Edytuj) */
 a.admin-btn {
     display: inline-flex;
     align-items: center;
@@ -890,7 +890,7 @@ a.admin-btn {
     margin-top: 16px;
 }
 
-/* ---------- prze≥πcznik sekcji panelu: S≥owniki / Zg≥oszenia ---------- */
+/* ---------- prze≈ÇƒÖcznik sekcji panelu: S≈Çowniki / Zg≈Çoszenia ---------- */
 .admin-sections {
     display: flex;
     gap: 4px;
@@ -925,7 +925,7 @@ a.admin-btn {
         outline-offset: 2px;
     }
 
-/* ---------- lista zg≥oszeÒ ---------- */
+/* ---------- lista zg≈Çosze≈Ñ ---------- */
 .admin-content-head {
     display: flex;
     align-items: center;
@@ -943,7 +943,7 @@ a.admin-btn {
     border-radius: 999px;
     background: #fdf3e1;
     color: #9a6a12;
-    font-size: 0.85rem;
+    font-size: var(--fs-sm);
     font-weight: 700;
     text-align: center;
 }
@@ -956,7 +956,7 @@ a.admin-btn {
 
     .admin-plant-names span {
         color: #7a857f;
-        font-size: 0.85rem;
+        font-size: var(--fs-sm);
     }
 
 .admin-parts {
@@ -970,21 +970,21 @@ a.admin-btn {
     border-radius: 999px;
     background: #f0f6f2;
     color: #2f6c4d;
-    font-size: 0.78rem;
+    font-size: var(--fs-xs);
     font-weight: 600;
     white-space: nowrap;
 }
 
 .admin-muted {
     color: #7a857f;
-    font-size: 0.85rem;
+    font-size: var(--fs-sm);
 }
 
 .admin-row-corrupted td {
     background: #fdf2f1;
 }
 
-/* link wyglπdajπcy jak przycisk (Edytuj) */
+/* link wyglƒÖdajƒÖcy jak przycisk (Edytuj) */
 a.admin-btn {
     display: inline-flex;
     align-items: center;
@@ -1016,7 +1016,7 @@ a.admin-btn {
     margin-top: 16px;
 }
 
-/* ---------- roúliny w panelu admina ---------- */
+/* ---------- ro≈õliny w panelu admina ---------- */
 .admin-plant-link {
     color: inherit;
     text-decoration: none;
@@ -1034,7 +1034,7 @@ a.admin-btn {
     gap: 12px;
 }
 
-/* ---------- prze≥πcznik sekcji panelu: S≥owniki / Zg≥oszenia ---------- */
+/* ---------- prze≈ÇƒÖcznik sekcji panelu: S≈Çowniki / Zg≈Çoszenia ---------- */
 .admin-sections {
     display: flex;
     gap: 4px;
@@ -1069,7 +1069,7 @@ a.admin-btn {
         outline-offset: 2px;
     }
 
-/* ---------- lista zg≥oszeÒ ---------- */
+/* ---------- lista zg≈Çosze≈Ñ ---------- */
 .admin-content-head {
     display: flex;
     align-items: center;
@@ -1087,7 +1087,7 @@ a.admin-btn {
     border-radius: 999px;
     background: #fdf3e1;
     color: #9a6a12;
-    font-size: 0.85rem;
+    font-size: var(--fs-sm);
     font-weight: 700;
     text-align: center;
 }
@@ -1100,7 +1100,7 @@ a.admin-btn {
 
     .admin-plant-names span {
         color: #7a857f;
-        font-size: 0.85rem;
+        font-size: var(--fs-sm);
     }
 
 .admin-parts {
@@ -1114,21 +1114,21 @@ a.admin-btn {
     border-radius: 999px;
     background: #f0f6f2;
     color: #2f6c4d;
-    font-size: 0.78rem;
+    font-size: var(--fs-xs);
     font-weight: 600;
     white-space: nowrap;
 }
 
 .admin-muted {
     color: #7a857f;
-    font-size: 0.85rem;
+    font-size: var(--fs-sm);
 }
 
 .admin-row-corrupted td {
     background: #fdf2f1;
 }
 
-/* link wyglπdajπcy jak przycisk (Edytuj) */
+/* link wyglƒÖdajƒÖcy jak przycisk (Edytuj) */
 a.admin-btn {
     display: inline-flex;
     align-items: center;
@@ -1160,7 +1160,7 @@ a.admin-btn {
     margin-top: 16px;
 }
 
-/* ---------- roúliny w panelu admina ---------- */
+/* ---------- ro≈õliny w panelu admina ---------- */
 .admin-plant-link {
     color: inherit;
     text-decoration: none;
@@ -1178,7 +1178,7 @@ a.admin-btn {
     gap: 12px;
 }
 
-/* ---------- biblioteka: prze≥πcznik niezweryfikowanych ---------- */
+/* ---------- biblioteka: prze≈ÇƒÖcznik niezweryfikowanych ---------- */
 .library-filter {
     display: flex;
     flex-wrap: wrap;
@@ -1244,14 +1244,14 @@ a.admin-btn {
 
 .library-filter-note {
     color: #7a857f;
-    font-size: 0.9rem;
+    font-size: var(--fs-sm);
 }
 
     .library-filter-note.error {
         color: #c0392b;
     }
 
-/* karta niezweryfikowanej roúliny */
+/* karta niezweryfikowanej ro≈õliny */
 .plant-card.pending {
     border-style: dashed;
     border-color: #f1dcb0;
@@ -1267,7 +1267,7 @@ a.admin-btn {
 .plant-card-note {
     margin-top: auto;
     color: #9a6a12;
-    font-size: 0.85rem;
+    font-size: var(--fs-sm);
 }
 
 /* ---------- ustawienia wyszukiwania ---------- */
@@ -1303,7 +1303,7 @@ a.admin-btn {
     justify-content: space-between;
     gap: 8px;
     color: #7a857f;
-    font-size: 0.8rem;
+    font-size: var(--fs-xs);
 }
 
 /* ---------- wyniki ---------- */
@@ -1320,13 +1320,13 @@ a.admin-btn {
 .search-results-meta {
     margin: 0 0 20px;
     color: #7a857f;
-    font-size: 0.9rem;
+    font-size: var(--fs-sm);
 }
 
 .match-badge {
     padding: 3px 10px;
     border-radius: 999px;
-    font-size: 0.85rem;
+    font-size: var(--fs-sm);
     font-weight: 700;
 }
 
@@ -1363,12 +1363,12 @@ a.admin-btn {
 .match-details {
     margin: 6px 0 0;
     color: #7a857f;
-    font-size: 0.85rem;
+    font-size: var(--fs-sm);
 }
 
 /* =====================================================================
-   ZdjÍcia roúlin ñ wspÛlne style dla PhotoPicker, PlantPhotoManager
-   i listy zg≥oszeÒ.
+   Zdjƒôcia ro≈õlin ‚Äì wsp√≥lne style dla PhotoPicker, PlantPhotoManager
+   i listy zg≈Çosze≈Ñ.
    ===================================================================== */
 
 .photo-picker {
@@ -1408,14 +1408,14 @@ a.admin-btn {
     }
 
 .photo-badge {
-    font-size: 0.875rem;
+    font-size: var(--fs-sm);
     font-weight: 600;
     padding: 0.3rem 0;
 }
 
 .photo-action {
     font: inherit;
-    font-size: 0.875rem;
+    font-size: var(--fs-sm);
     padding: 0.3rem 0.5rem;
     cursor: pointer;
 }
@@ -1453,7 +1453,7 @@ a.admin-btn {
         opacity: 0.5;
     }
 
-    /* natywne pole pliku zostaje dostÍpne z klawiatury, ale jest niewidoczne */
+    /* natywne pole pliku zostaje dostƒôpne z klawiatury, ale jest niewidoczne */
     .photo-add input[type="file"] {
         position: absolute;
         inset: 0;
@@ -1465,7 +1465,7 @@ a.admin-btn {
 
 .photo-hint {
     margin: 0;
-    font-size: 0.875rem;
+    font-size: var(--fs-sm);
     opacity: 0.75;
 }
 
@@ -1474,7 +1474,7 @@ a.admin-btn {
     color: #b42318;
 }
 
-/* ---------- lista zg≥oszeÒ: miniatura zdjÍcia g≥Ûwnego ---------- */
+/* ---------- lista zg≈Çosze≈Ñ: miniatura zdjƒôcia g≈Ç√≥wnego ---------- */
 
 .summary-thumb {
     width: 64px;
@@ -1505,7 +1505,7 @@ a.admin-btn {
     }
 
 /* =====================================================================
-   PRZEPISY ñ formularz, wybÛr ze s≥ownikÛw, okno "Przypisz", panel admina.
+   PRZEPISY ‚Äì formularz, wyb√≥r ze s≈Çownik√≥w, okno "Przypisz", panel admina.
    ===================================================================== */
 /* ---------- biblioteka --------- */
 
@@ -1560,7 +1560,7 @@ a.admin-btn {
 }
 
 
-/* ---------- wybÛr ze s≥ownika (DictionaryMultiPicker) ---------- */
+/* ---------- wyb√≥r ze s≈Çownika (DictionaryMultiPicker) ---------- */
 
 .dict-picker {
     display: flex;
@@ -1584,7 +1584,7 @@ a.admin-btn {
     border-radius: 999px;
     background: #e3f0e8;
     color: #2f6c4d;
-    font-size: 0.9rem;
+    font-size: var(--fs-sm);
     font-weight: 600;
     overflow-wrap: anywhere;
 }
@@ -1644,7 +1644,7 @@ a.admin-btn {
     display: flex;
     flex-direction: column;
     gap: 4px;
-    font-size: 0.85rem;
+    font-size: var(--fs-sm);
     font-weight: 600;
     color: #9a6a12;
 }
@@ -1709,7 +1709,7 @@ a.admin-btn {
     .dict-option-names span {
         overflow: hidden;
         color: #7a857f;
-        font-size: 0.85rem;
+        font-size: var(--fs-sm);
         text-overflow: ellipsis;
         white-space: nowrap;
     }
@@ -1720,7 +1720,7 @@ a.admin-btn {
     border-radius: 999px;
     background: #fdf3e1;
     color: #9a6a12;
-    font-size: 0.75rem;
+    font-size: var(--fs-2xs);
     font-weight: 600;
     white-space: nowrap;
 }
@@ -1739,7 +1739,7 @@ a.admin-btn {
 .dict-limit {
     margin: 0;
     color: #7a857f;
-    font-size: 0.85rem;
+    font-size: var(--fs-sm);
 }
 
 
@@ -1778,7 +1778,7 @@ a.admin-btn {
     .hr-modal-head h2 {
         margin: 0;
         color: #1d2b21;
-        font-size: 1.35rem;
+        font-size: var(--fs-lg);
         overflow-wrap: anywhere;
     }
 
@@ -1802,7 +1802,7 @@ a.admin-btn {
 .hr-modal-note {
     margin: 12px 0 0;
     color: #536158;
-    font-size: 0.92rem;
+    font-size: var(--fs-base);
     line-height: 1.6;
 }
 
@@ -1818,7 +1818,7 @@ a.admin-btn {
     .hr-modal-section h3 {
         margin: 0;
         color: #284631;
-        font-size: 1rem;
+        font-size: var(--fs-base);
     }
 
 .hr-modal-search {
@@ -1846,7 +1846,7 @@ a.admin-btn {
         flex-direction: column;
         gap: 4px;
         color: #344538;
-        font-size: 0.88rem;
+        font-size: var(--fs-sm);
         font-weight: 600;
     }
 
@@ -1875,7 +1875,7 @@ a.admin-btn {
 .admin-tabs-group {
     padding: 10px 12px 4px;
     color: #7a857f;
-    font-size: 0.72rem;
+    font-size: var(--fs-2xs);
     font-weight: 800;
     letter-spacing: 0.12em;
     text-transform: uppercase;
@@ -2047,7 +2047,7 @@ a.admin-btn {
 }
 
 
-/* ---------- propozycja nowego wpisu ñ karta, tak samo w kaødym s≥owniku ---------- */
+/* ---------- propozycja nowego wpisu ‚Äì karta, tak samo w ka≈ºdym s≈Çowniku ---------- */
 
 .dict-proposal {
     display: flex;
@@ -2088,7 +2088,7 @@ a.admin-btn {
     background: #9a6a12;
     color: #ffffff;
     font: inherit;
-    font-size: 0.8rem;
+    font-size: var(--fs-xs);
     font-weight: 700;
     cursor: pointer;
 }
@@ -2121,7 +2121,7 @@ a.admin-btn {
 .dict-proposal-hint {
     margin: 0;
     color: #9a6a12;
-    font-size: 0.82rem;
+    font-size: var(--fs-xs);
 }
 
 
@@ -2157,7 +2157,7 @@ a.admin-btn {
 }
 
 /* =====================================================================
-   PRZEPISY ñ biblioteka, kafelek przepisu, sekcja na stronie roúliny.
+   PRZEPISY ‚Äì biblioteka, kafelek przepisu, sekcja na stronie ro≈õliny.
    Wklej na koniec wwwroot/app.css (globalnie, bo kafelek jest na kilku stronach).
    ===================================================================== */
 
@@ -2175,7 +2175,7 @@ a.admin-btn {
 
     .prod-page-header h1 {
         margin: 0;
-        font-size: clamp(3rem, 6vw, 5rem);
+        font-size: var(--fs-display);
         line-height: 1;
         letter-spacing: -0.06em;
     }
@@ -2184,7 +2184,7 @@ a.admin-btn {
         max-width: 620px;
         margin: 24px 0 0;
         color: #536158;
-        font-size: 1.1rem;
+        font-size: var(--fs-md);
         line-height: 1.7;
     }
 
@@ -2206,7 +2206,7 @@ a.admin-btn {
     background: #ffffff;
     color: #1c2a22;
     font: inherit;
-    font-size: 1rem;
+    font-size: var(--fs-base);
     box-shadow: 0 6px 20px rgba(31, 52, 40, 0.06);
 }
 
@@ -2216,7 +2216,7 @@ a.admin-btn {
         box-shadow: 0 8px 24px rgba(55, 107, 75, 0.12);
     }
 
-/* prze≥πcznik ñ ten sam wyglπd co "Pokaø teø roúlinyÖ" */
+/* prze≈ÇƒÖcznik ‚Äì ten sam wyglƒÖd co "Poka≈º te≈º ro≈õliny‚Ä¶" */
 .prod-switch {
     position: relative;
     display: inline-flex;
@@ -2273,7 +2273,7 @@ a.admin-btn {
 
 .prod-note {
     color: #7a857f;
-    font-size: 0.9rem;
+    font-size: var(--fs-sm);
 }
 
     .prod-note.is-error {
@@ -2382,7 +2382,7 @@ a.admin-btn {
         outline-offset: 3px;
     }
 
-/* zdjÍcie zawsze w ca≥oúci */
+/* zdjƒôcie zawsze w ca≈Ço≈õci */
 .prod-card-media {
     position: relative;
     aspect-ratio: 4 / 3;
@@ -2426,7 +2426,7 @@ a.admin-btn {
     background: rgba(255, 255, 255, 0.94);
     box-shadow: 0 0 0 1px #e0e6df;
     color: #52745a;
-    font-size: 0.72rem;
+    font-size: var(--fs-2xs);
     font-weight: 700;
     letter-spacing: 0.06em;
     text-transform: uppercase;
@@ -2442,13 +2442,13 @@ a.admin-btn {
     position: absolute;
     top: 12px;
     right: 12px;
-    z-index: 2; /* nad rozciπgniÍtym linkiem */
+    z-index: 2; /* nad rozciƒÖgniƒôtym linkiem */
     padding: 6px 14px;
     border: 1px solid #b7c7b7;
     border-radius: 20px;
     background: #ffffff;
     color: #315c3e;
-    font-size: 0.8rem;
+    font-size: var(--fs-xs);
     font-weight: 700;
     text-decoration: none;
 }
@@ -2469,7 +2469,7 @@ a.admin-btn {
     .prod-card-body h3 {
         margin: 0 0 2px;
         color: #1d2b21;
-        font-size: 1.2rem;
+        font-size: var(--fs-lg);
         letter-spacing: -0.02em;
         overflow-wrap: anywhere;
     }
@@ -2480,7 +2480,7 @@ a.admin-btn {
     outline: none;
 }
 
-    /* ca≥y kafelek klikalny */
+    /* ca≈Çy kafelek klikalny */
     .prod-card-link::after {
         content: "";
         position: absolute;
@@ -2491,7 +2491,7 @@ a.admin-btn {
 .prod-card-line {
     margin: 0;
     color: #536158;
-    font-size: 0.9rem;
+    font-size: var(--fs-sm);
     line-height: 1.5;
 }
 
@@ -2499,7 +2499,7 @@ a.admin-btn {
     display: inline-block;
     margin-right: 6px;
     color: #759078;
-    font-size: 0.68rem;
+    font-size: var(--fs-2xs);
     font-weight: 800;
     letter-spacing: 0.12em;
     text-transform: uppercase;
@@ -2522,7 +2522,7 @@ a.admin-btn {
     border-radius: 999px;
     background: #e3f0e8;
     color: #2f6c4d;
-    font-size: 0.8rem;
+    font-size: var(--fs-xs);
     font-weight: 600;
 }
 
@@ -2532,7 +2532,7 @@ a.admin-btn {
     }
 
 
-/* ---------- sekcja "Przepisy" na stronie roúliny ---------- */
+/* ---------- sekcja "Przepisy" na stronie ro≈õliny ---------- */
 
 .prod-section-heading {
     display: flex;
@@ -2575,17 +2575,17 @@ a.admin-btn {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
 }
 
-/* substancje czynne ñ neutralne, øeby odrÛønia≥y siÍ od chorÛb */
+/* substancje czynne ‚Äì neutralne, ≈ºeby odr√≥≈ºnia≈Çy siƒô od chor√≥b */
 .prod-substance {
     padding: 3px 10px;
     border: 1px solid #dfe5e1;
     border-radius: 999px;
     background: #f6faf8;
     color: #3d4a43;
-    font-size: 0.8rem;
+    font-size: var(--fs-xs);
     font-weight: 600;
 }
 
@@ -2594,7 +2594,7 @@ a.admin-btn {
         color: #5f6b65;
     }
 
-/* strona roúliny: zg≥oszone przepisy */
+/* strona ro≈õliny: zg≈Çoszone przepisy */
 .prod-pending-block {
     margin-top: 32px;
     padding-top: 24px;
@@ -2604,7 +2604,7 @@ a.admin-btn {
 .prod-subheading {
     margin: 0 0 6px;
     color: #2c3d31;
-    font-size: 1.25rem;
+    font-size: var(--fs-lg);
 }
 
 :root[data-theme="dark"] .prod-substance {
@@ -2625,7 +2625,7 @@ a.admin-btn {
     display: inline-block;
     margin-top: 14px;
     color: #2f6243;
-    font-size: 0.92rem;
+    font-size: var(--fs-base);
     font-weight: 600;
     text-decoration: none;
 }
@@ -2634,11 +2634,11 @@ a.admin-btn {
         text-decoration: underline;
     }
 
-/* ---------- formularz przepisu: sposÛb podania (kafelki do zaznaczania) ---------- */
+/* ---------- formularz przepisu: spos√≥b podania (kafelki do zaznaczania) ---------- */
 
 .submission-field .submission-label {
     color: #344538;
-    font-size: 0.9rem;
+    font-size: var(--fs-sm);
     font-weight: 600;
 }
 
@@ -2659,7 +2659,7 @@ a.admin-btn {
     background: #fbfcf9;
     color: #3d4a43;
     font: inherit;
-    font-size: 0.9rem;
+    font-size: var(--fs-sm);
     font-weight: 600;
     cursor: pointer;
     transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
@@ -2706,16 +2706,16 @@ a.admin-btn {
     min-height: 96px;
 }
 
-/* podglπd linku pod polem "èrÛd≥o" */
+/* podglƒÖd linku pod polem "≈πr√≥d≈Ço" */
 .prd-source-preview {
     margin: 6px 0 0;
     color: #5f6b65;
-    font-size: 0.85rem;
+    font-size: var(--fs-sm);
     overflow-wrap: anywhere;
 }
 
 
-/* ---------- link do ürÛd≥a (formularz + strona przepisu) ---------- */
+/* ---------- link do ≈∫r√≥d≈Ça (formularz + strona przepisu) ---------- */
 
 .prd-source-link {
     color: #2f6243;
@@ -2739,7 +2739,7 @@ a.admin-btn {
 }
 
 
-/* ---------- strona przepisu: ürÛd≥o i stosowanie ---------- */
+/* ---------- strona przepisu: ≈∫r√≥d≈Ço i stosowanie ---------- */
 
 .prd-source {
     display: flex;
@@ -2753,25 +2753,25 @@ a.admin-btn {
 
 .prd-source-text {
     color: #3d4a43;
-    font-size: 0.95rem;
+    font-size: var(--fs-base);
     overflow-wrap: anywhere;
 }
 
 .prd-usage-card {
-    margin-top: 20px;
+    margin-top: var(--gap-card);
 }
 
 /* dawka: zachowane nowe linie z formularza */
 .prd-dosage {
     color: #26352b;
-    font-size: 1rem;
+    font-size: var(--fs-base);
     line-height: 1.7;
     white-space: pre-line;
     overflow-wrap: anywhere;
 }
 
 
-/* ---------- filtry bibliotek (roúliny i przepisy) ---------- */
+/* ---------- filtry bibliotek (ro≈õliny i przepisy) ---------- */
 
 .lib-filters {
     margin: 0 0 24px;
@@ -2817,7 +2817,7 @@ a.admin-btn {
     border-radius: 999px;
     background: #2f6243;
     color: #fff;
-    font-size: 0.78rem;
+    font-size: var(--fs-xs);
 }
 
 .lib-filters-caret {
@@ -2832,7 +2832,7 @@ a.admin-btn {
     background: #f6faf8;
     color: #2f6243;
     font: inherit;
-    font-size: 0.85rem;
+    font-size: var(--fs-sm);
     font-weight: 600;
     cursor: pointer;
 }
@@ -2844,10 +2844,10 @@ a.admin-btn {
 .lib-filters-summary {
     margin-left: auto;
     color: #7a857f;
-    font-size: 0.85rem;
+    font-size: var(--fs-sm);
 }
 
-/* komputer: rozwiniÍte, "Filtry" zwija */
+/* komputer: rozwiniƒôte, "Filtry" zwija */
 .lib-filters-body {
     margin-top: 14px;
 }
@@ -2875,7 +2875,7 @@ a.admin-btn {
 
 .lib-filter-label {
     color: #344538;
-    font-size: 0.82rem;
+    font-size: var(--fs-xs);
     font-weight: 600;
 }
 
@@ -2888,7 +2888,7 @@ a.admin-btn {
     background: #fbfcf9;
     color: #26372a;
     font: inherit;
-    font-size: 0.92rem;
+    font-size: var(--fs-base);
     text-overflow: ellipsis;
 }
 
@@ -2914,7 +2914,7 @@ a.admin-btn {
 .lib-filter-hint {
     margin: 4px 0 10px;
     color: #7a857f;
-    font-size: 0.82rem;
+    font-size: var(--fs-xs);
 }
 
 .lib-chip-row {
@@ -2935,7 +2935,7 @@ a.admin-btn {
     background: #f6faf8;
     color: #3d4a43;
     font: inherit;
-    font-size: 0.85rem;
+    font-size: var(--fs-sm);
     font-weight: 600;
     text-align: left;
     overflow-wrap: anywhere;
@@ -2972,7 +2972,7 @@ a.admin-btn {
     color: #fff;
 }
 
-/* biblioteka roúlin: pastylka "Trujπca" */
+/* biblioteka ro≈õlin: pastylka "TrujƒÖca" */
 .plant-type.plant-poison {
     border-color: #e7b9b2;
     background: #fbecea;
@@ -3116,7 +3116,7 @@ a.admin-btn {
     color: var(--d-warn-text);
 }
 
-/* strona przepisu (klasy prd-*; pd-* obs≥uguje dark.css) */
+/* strona przepisu (klasy prd-*; pd-* obs≈Çuguje dark.css) */
 :root[data-theme="dark"] .prd-label {
     color: var(--d-muted);
 }
@@ -3145,7 +3145,7 @@ a.admin-btn {
     color: var(--d-muted);
 }
 
-/* na stronie przepisu dt to nazwa choroby ñ jasna, nie przygaszona */
+/* na stronie przepisu dt to nazwa choroby ‚Äì jasna, nie przygaszona */
 :root[data-theme="dark"] .prd-main .pd-field dt {
     color: var(--d-text);
 }
@@ -3153,7 +3153,7 @@ a.admin-btn {
 :root[data-theme="dark"] .prd-main .pd-field dd {
     color: var(--d-text-2);
 }
-/* strona przepisu: pastylki w≥aúciwoúci i substancji w trybie ciemnym */
+/* strona przepisu: pastylki w≈Ça≈õciwo≈õci i substancji w trybie ciemnym */
 :root[data-theme="dark"] .prd-chip.is-static {
     background: var(--d-surface-2);
     border-color: var(--d-border-strong);
@@ -3298,6 +3298,6 @@ a.admin-btn {
     }
 
     .hero h1 {
-        font-size: 3.2rem;
+        font-size: var(--fs-hero);
     }
 }

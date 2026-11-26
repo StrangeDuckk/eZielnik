@@ -1,12 +1,12 @@
 /* =========================
-   HERO – losowa roœlina
+   HERO â€“ losowa roÅ›lina
    ========================= */
 
 .hero-figure {
     margin: 0;
 }
 
-/* wrapper jest teraz linkiem do roœliny */
+/* wrapper jest teraz linkiem do roÅ›liny */
 a.hero-image-wrapper {
     display: block;
 }
@@ -20,7 +20,7 @@ a.hero-image-wrapper {
     }
 
 .hero-caption {
-    margin-top: 40px; /* odstêp od ozdobnej ramki przesuniêtej o 20 px */
+    margin-top: 40px; /* odstÄ™p od ozdobnej ramki przesuniÄ™tej o 20 px */
     padding-left: 6px;
 }
 
@@ -40,7 +40,7 @@ a.hero-image-wrapper {
 
 .hero-caption-name {
     color: #1d2b21;
-    font-size: 1.2rem;
+    font-size: var(--fs-lg);
     font-weight: 700;
     letter-spacing: -0.02em;
 }
@@ -48,14 +48,14 @@ a.hero-image-wrapper {
 .hero-caption-latin {
     color: #7a857c;
     font-family: Georgia, serif;
-    font-size: 0.95rem;
+    font-size: var(--fs-base);
     font-style: italic;
 }
 
 .hero-caption-more {
     margin-top: 6px;
     color: #315c3e;
-    font-size: 0.92rem;
+    font-size: var(--fs-base);
     font-weight: 600;
 }
 
@@ -74,7 +74,7 @@ a.hero-image-wrapper {
 
 
 /* =========================
-   FOOTER – ostrze¿enie i autorka
+   FOOTER â€“ ostrzeÅ¼enie i autorka
    ========================= */
 
 .footer-disclaimer {
@@ -84,7 +84,7 @@ a.hero-image-wrapper {
     border: 1px solid #4a5a4e;
     border-radius: 12px;
     color: #e8d9b5;
-    font-size: 0.95rem;
+    font-size: var(--fs-base);
     font-weight: 600;
 }
 
@@ -105,7 +105,7 @@ a.hero-image-wrapper {
             text-decoration: underline;
         }
 
-/* pasek b³êdu Blazora – ukryty do momenti bledu */
+/* pasek bÅ‚Ä™du Blazora â€“ ukryty do momenti bledu */
 #blazor-error-ui {
     color-scheme: light only;
     background: lightyellow;

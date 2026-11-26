@@ -1,4 +1,4 @@
-﻿.search-bar {
+.search-bar {
     display: flex;
     align-items: center;
     width: 100%;
@@ -16,7 +16,7 @@
         background: #ffffff;
         color: #1b2a21;
         font-family: inherit;
-        font-size: 16px;
+        font-size: var(--fs-base);
         outline: none;
         transition: border-color 0.2s ease, box-shadow 0.2s ease;
     }
@@ -67,7 +67,7 @@
 .search-form-link {
     width: fit-content;
     color: #2f6243;
-    font-size: 0.9rem;
+    font-size: var(--fs-sm);
     font-weight: 600;
     text-decoration: none;
 }
@@ -86,7 +86,7 @@
     }
 
         .search-bar input {
-            font-size: 15px;
+            font-size: var(--fs-base);
         }
 
         .search-bar button {

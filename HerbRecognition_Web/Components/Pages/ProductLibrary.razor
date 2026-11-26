@@ -7,13 +7,14 @@
 
 @inject ProductApiService ProductApi
 @inject AdminAuthService Auth
+@inject PendingPictureService PendingPictures
 
 <PageTitle>Przepisy</PageTitle>
 
 <div class="prod-page">
 
     <section class="prod-page-header">
-        <span class="section-label">HERB RECOGNITION</span>
+        <span class="section-label">eZielnik</span>
         <h1>Przepisy</h1>
         <p>
             Syropy, napary, nalewki i maści z roślin z naszej bazy –
@@ -160,7 +161,8 @@
     private bool isLoading = true;
     private string? errorMessage;
 
-    private bool showPending;
+    // zgłoszenia widoczne od razu – przełącznik pozwala je ukryć
+    private bool showPending = true;
     private bool pendingLoaded;
     private bool isLoadingPending;
     private string? pendingError;
@@ -199,7 +201,11 @@
             .Where(MatchesFilters)
             .OrderBy(p => p.Name, PolishOrder);
 
-    protected override async Task OnInitializedAsync() => await LoadAsync();
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadAsync();
+        await OnShowPendingChangedAsync();   // przełącznik jest domyślnie włączony
+    }
 
     // tekst z adresu trafia do pola wyszukiwania (także przy kolejnym wyszukaniu ze strony głównej);
     // przy wyszukiwaniu od razu szukamy też w zgłoszeniach
@@ -212,7 +218,7 @@
 
         if (query.Length > 0 && !showPending)
         {
-            showPending = true;
+            showPending = true;      // ktoś wyłączył przełącznik, a potem wyszukał ze strony głównej
             await OnShowPendingChangedAsync();
         }
     }
@@ -238,7 +244,7 @@
         }
     }
 
-    // zgłoszenia pobieramy dopiero przy pierwszym włączeniu przełącznika
+    // zgłoszenia pobieramy raz – przy starcie strony (przełącznik domyślnie włączony)
     private async Task OnShowPendingChangedAsync()
     {
         if (!showPending || pendingLoaded)
@@ -253,6 +259,7 @@
         try
         {
             pending = await ProductApi.GetPendingProductsAsync();
+            await PendingPictures.ApplyToProductSubmissionsAsync(pending);   // admin: podgląd zdjęcia
             pendingLoaded = true;
         }
         catch (Exception ex)

@@ -1,4 +1,4 @@
-﻿
+
 .submission-page {
     padding-bottom: 64px;
 }
@@ -22,14 +22,14 @@
     .submission-section h2 {
         margin: 0 0 22px;
         color: #284631;
-        font-size: 1.35rem;
+        font-size: var(--fs-lg);
     }
 
 .section-description {
     margin-top: -12px;
     margin-bottom: 20px;
     color: #68756a;
-    font-size: 0.9rem;
+    font-size: var(--fs-sm);
 }
 
 .submission-grid {
@@ -47,7 +47,7 @@
 
     .submission-field label {
         color: #344538;
-        font-size: 0.94rem;
+        font-size: var(--fs-base);
         font-weight: 600;
     }
 
@@ -78,7 +78,7 @@
 
 .validation-message {
     color: #b33a3a;
-    font-size: 0.84rem;
+    font-size: var(--fs-sm);
 }
 
 .validation-errors {
@@ -247,7 +247,7 @@
     }
 
     .submission-section h2 {
-        font-size: 1.2rem;
+        font-size: var(--fs-lg);
     }
 
     .submission-actions,

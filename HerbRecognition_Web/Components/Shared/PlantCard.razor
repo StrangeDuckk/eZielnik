@@ -1,0 +1,90 @@
+@using HerbRecognition_Web.Communication.DTOs
+@using HerbRecognition_Web.Communication.Services
+
+@*
+    Kafelek rośliny – wspólny dla biblioteki (/plants) i wyników wyszukiwania po nazwie (/search).
+    Style: wwwroot/theme.css (globalne, bo komponent jest używany na kilku stronach).
+    Zgłoszenie (IsPending): bez linku do strony rośliny; zdjęcie tylko wtedy, gdy strona dała ThumbnailUrl
+    (dla admina – patrz PendingPictureService).
+*@
+
+<article class="plant-card @(Item.IsPending ? "pending" : "")">
+
+    @* zdjęcie zawsze w całości (contain), bez przycinania *@
+    <div class="plant-card-image">
+        @if (Item.ThumbnailUrl is not null)
+        {
+            <img src="@Item.ThumbnailUrl" alt="" loading="lazy" />
+        }
+        else
+        {
+            <span class="plant-card-placeholder" aria-hidden="true">@icon</span>
+        }
+
+        <div class="plant-card-pills">
+            <span class="plant-type">
+                <span class="plant-type-icon" aria-hidden="true">@icon</span>
+                @(Item.PlantTypeName ?? "Nieznany")
+            </span>
+
+            @if (Item.IsPoisonous)
+            {
+                <span class="plant-type plant-poison" title="Roślina trująca">☠ Trująca</span>
+            }
+
+            @if (!string.IsNullOrEmpty(Item.MonthOfHarvestName))
+            {
+                <span class="plant-type plant-month">Zbiór: @Item.MonthOfHarvestName</span>
+            }
+
+            @if (Item.IsPending)
+            {
+                <span class="plant-type plant-pending">Niezweryfikowana</span>
+            }
+        </div>
+
+        @* tylko wygoda – prawdziwą ochroną są strony admina i API (JWT z rolą Admin) *@
+        @if (ShowEdit)
+        {
+            <a href="@(Item.IsPending ? $"/admin/submissions/{Item.Id}" : $"/admin/plants/{Item.Id}")"
+               class="plant-card-edit">
+                <span aria-hidden="true">✎</span> Edytuj
+            </a>
+        }
+    </div>
+
+    <div class="plant-card-info">
+        <h2 title="@Item.PolishName">
+            @if (Item.IsPending)
+            {
+                @Item.PolishName
+            }
+            else
+            {
+                @* link rozciągnięty na cały kafelek (CSS ::after) *@
+                <a href="@($"/plants/{Item.Id}")" class="plant-card-stretched">@Item.PolishName</a>
+            }
+        </h2>
+
+        <p class="plant-card-meta">
+            @if (!string.IsNullOrEmpty(Item.LatinName))
+            {
+                <em>@Item.LatinName</em>
+                <span aria-hidden="true"> · </span>
+            }
+            <span>@(Item.IsPending ? $"Zgłoszenie #{Item.Id}" : $"#{Item.Id}")</span>
+        </p>
+    </div>
+
+</article>
+
+@code {
+    [Parameter, EditorRequired] public PlantCardItem Item { get; set; } = default!;
+
+    /// <summary>Przycisk "Edytuj" (zalogowany admin).</summary>
+    [Parameter] public bool ShowEdit { get; set; }
+
+    private string icon = "🌱";
+
+    protected override void OnParametersSet() => icon = PlantTypeIcon.For(Item.PlantTypeName);
+}
