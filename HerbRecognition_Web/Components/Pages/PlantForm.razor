@@ -6,6 +6,7 @@
 
 @inject UserInputApiService UserInputApiService
 @inject PictureApiService PictureApi
+@inject RecognitionHandoff Handoff
 
 <PageTitle>Formularz zgłoszenia rośliny</PageTitle>
 
@@ -41,7 +42,16 @@
     }
     else
     {
+        @if (fromRecognition)
+        {
+            <div class="search-prefill-note" role="status">
+                <strong>Roślina rozpoznana ze zdjęcia, której nie ma jeszcze w eZielniku.</strong>
+                Nazwa łacińska i Twoje zdjęcie są już w formularzu – uzupełnij resztę informacji.
+            </div>
+        }
+
         <PlantSubmissionForm SubmitText="Wyślij zgłoszenie"
+                             Initial="initial"
                              OnSubmit="SubmitAsync"
                              FormName="PlantSubmitAsync">
             <ExtraContent>
@@ -66,6 +76,25 @@
     private int submissionId;
     private string? photoError;
     private List<PhotoUpload> photos = [];
+
+    // /plant-form?latin=… – zgłoszenie z wyniku rozpoznawania ze zdjęcia
+    [SupplyParameterFromQuery(Name = "latin")]
+    public string? Latin { get; set; }
+
+    private CreatePlantDTO? initial;
+    private bool fromRecognition;
+
+    protected override void OnInitialized()
+    {
+        if (string.IsNullOrWhiteSpace(Latin)) return;
+
+        var latin = Latin.Trim();
+        initial = new CreatePlantDTO { LatinName = latin.Length > 100 ? latin[..100] : latin };
+        fromRecognition = true;
+
+        if (Handoff.TakePhoto() is { } photo)
+            photos = [photo];
+    }
 
     // wyjątki stąd pokaże formularz nad przyciskiem
     private async Task SubmitAsync(CreatePlantDTO payload)

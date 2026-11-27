@@ -774,6 +774,9 @@ else
 
     /// <summary>Tryb wyszukiwania: nic nie jest wymagane, przycisk wywołuje OnSearch.</summary>
     [Parameter] public bool SearchMode { get; set; }
+
+    /// <summary>Tylko wyszukiwanie: formularz wypełniony wcześniej (np. przez model ze zdjęcia).</summary>
+    [Parameter] public PlantSearchCriteriaDTO? InitialCriteria { get; set; }
     [Parameter] public EventCallback<PlantSearchCriteriaDTO> OnSearch { get; set; }
 
     /// <summary>Dodatkowa zawartość nad przyciskami (np. zdjęcia, ustawienia wyszukiwania).</summary>
@@ -891,6 +894,8 @@ else
 
         if (loadError is null && Initial is not null)
             await LoadFromAsync(Initial);
+        else if (loadError is null && SearchMode && InitialCriteria is not null)
+            LoadFromCriteria(InitialCriteria);
 
         isLoading = false;
     }
@@ -967,6 +972,106 @@ else
             similarPlants = new();
             submitError = "Nie udało się wczytać podobnych roślin. " +
                           "Zapisanie formularza teraz usunie te powiązania – odśwież stronę, zanim zapiszesz.";
+        }
+    }
+
+    /// <summary>Wczytuje kryteria wyszukiwania do formularza (puste pola zostają "Nie wiem").</summary>
+    private void LoadFromCriteria(PlantSearchCriteriaDTO c)
+    {
+        form.Name = c.Name ?? "";
+        form.PolishName = c.PolishName ?? "";
+        form.LatinName = c.LatinName;
+        form.Subriquet = c.Subriquet;
+        form.MoreInfo = c.MoreInfo;
+        form.PlantTypeID = c.PlantTypeId ?? 0;
+        form.OccuranceId = c.OccuranceId ?? 0;
+        form.MonthOfHarvestId = c.MonthOfHarvestId;
+        poisonabilitySearch = c.PoisonabilityId;
+
+        if (c.Stalk is { } stalk)
+        {
+            HasStalk = true;
+            form.CreateStalkDTO!.StalkShapeId = stalk.ShapeId ?? 0;
+            form.CreateStalkDTO.StalkColorId = stalk.ColorId ?? 0;
+            form.CreateStalkDTO.StalkSurfaceId = stalk.SurfaceId ?? 0;
+            form.CreateStalkDTO.StalkMonthOfHarvestId = stalk.MonthOfHarvestId;
+            form.CreateStalkDTO.StalkMoreInfo = stalk.MoreInfo;
+            stalkHollow = stalk.IsHollow;
+        }
+
+        if (c.Sap is { } sap)
+        {
+            HasSap = true;
+            form.CreateSapDTO!.SapColorId = sap.ColorId ?? 0;
+            form.CreateSapDTO.SapMonthOfHarvestId = sap.MonthOfHarvestId;
+            form.CreateSapDTO.SapMoreInfo = sap.MoreInfo;
+            sapLeavesStain = sap.LeavesStain;
+            sapSticky = sap.Sticky;
+        }
+
+        if (c.Root is { } root)
+        {
+            HasRoot = true;
+            form.CreateRootDTO!.RootColorId = root.ColorId ?? 0;
+            form.CreateRootDTO.RootSurfaceId = root.SurfaceId ?? 0;
+            form.CreateRootDTO.RootThicknessId = root.ThicknessId ?? 0;
+            form.CreateRootDTO.RootMonthOfHarvestId = root.MonthOfHarvestId;
+            form.CreateRootDTO.RootMoreInfo = root.MoreInfo;
+            rootIsHollow = root.IsHollow;
+        }
+
+        if (c.Hat is { } hat)
+        {
+            HasHat = true;
+            form.CreateHatDTO!.HatColorId = hat.ColorId ?? 0;
+            form.CreateHatDTO.HatShapeId = hat.ShapeId ?? 0;
+            form.CreateHatDTO.HatThicknessId = hat.ThicknessId ?? 0;
+            form.CreateHatDTO.HatSurfaceId = hat.SurfaceId ?? 0;
+            form.CreateHatDTO.HatMonthOfHarvestId = hat.MonthOfHarvestId;
+            form.CreateHatDTO.HatMoreInfo = hat.MoreInfo;
+            hatHasSpots = hat.HasSpots;
+            hatHasGills = hat.HasGills;
+            hatHasRing = hat.HasRing;
+        }
+
+        if (c.Leaf is { } leaf)
+        {
+            HasLeaf = true;
+            form.CreateLeafDTO!.LeafShapeId = leaf.ShapeId ?? 0;
+            form.CreateLeafDTO.LeafColorId = leaf.ColorId ?? 0;
+            form.CreateLeafDTO.LeafSurfaceId = leaf.SurfaceId ?? 0;
+            form.CreateLeafDTO.LeafThicknessId = leaf.ThicknessId ?? 0;
+            form.CreateLeafDTO.LeafFlavourId = leaf.FlavourId;
+            form.CreateLeafDTO.LeafMonthOfHarvestId = leaf.MonthOfHarvestId;
+            form.CreateLeafDTO.LeafLength = leaf.Size ?? 0;
+            form.CreateLeafDTO.LeafMoreInfo = leaf.MoreInfo;
+            leafStripes = leaf.HasStripes;
+            leafSpots = leaf.HasSpots;
+            leafHoles = leaf.HasHoles;
+        }
+
+        if (c.Flower is { } flower)
+        {
+            HasFlower = true;
+            form.CreateFlowerDTO!.FlowerColorId = flower.ColorId ?? 0;
+            form.CreateFlowerDTO.FlowerShapeId = flower.ShapeId ?? 0;
+            form.CreateFlowerDTO.FlowerFlavourId = flower.FlavourId;
+            form.CreateFlowerDTO.FlowerMonthOfHarvestId = flower.MonthOfHarvestId;
+            form.CreateFlowerDTO.FlowerSizeInCm = flower.Size ?? 0;
+            form.CreateFlowerDTO.FlowerMoreInfo = flower.MoreInfo;
+            flowerScentSearch = flower.ScentPower;
+        }
+
+        if (c.Fruit is { } fruit)
+        {
+            HasFruit = true;
+            form.CreateFruitDTO!.FruitFlavourId = fruit.FlavourId;
+            form.CreateFruitDTO.FruitShapeId = fruit.ShapeId ?? 0;
+            form.CreateFruitDTO.FruitColorId = fruit.ColorId ?? 0;
+            form.CreateFruitDTO.FruitSurfaceId = fruit.SurfaceId ?? 0;
+            form.CreateFruitDTO.FruitThicknessId = fruit.ThicknessId ?? 0;
+            form.CreateFruitDTO.FruitMonthOfHarvestId = fruit.MonthOfHarvestId;
+            form.CreateFruitDTO.FruitMoreInfo = fruit.MoreInfo;
         }
     }
 

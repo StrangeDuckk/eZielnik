@@ -1,7 +1,23 @@
-# Tylko do testów na własnym komputerze – otwiera stronę na http://localhost:8080
+# Tylko do testów na własnym komputerze.
+#
+# Cała aplikacja w Dockerze (strona na http://localhost:8080):
 #   docker compose -f docker-compose.yml -f docker-compose.local.yml up --build
-# Na serwerze ruch z domeny kieruje do strony Coolify (Traefik), ten plik nie jest używany.
+#
+#   docker compose -f docker-compose.yml -f docker-compose.local.yml up --build ml
+#
+# Na serwerze ruch z domeny kieruje do strony Coolify (Traefik)
 services:
   web:
     ports:
       - "8080:8080"
+
+  # API pod http://localhost:5000 – do testu trafności
+  # (python HerbRecognition_ML/tools/eval.py --api http://localhost:5000 ...)
+  api:
+    ports:
+      - "5000:8080"
+
+  # serwis rozpoznawania pod http://localhost:8000 (stan: http://localhost:8000/health)
+  ml:
+    ports:
+      - "8000:8000"

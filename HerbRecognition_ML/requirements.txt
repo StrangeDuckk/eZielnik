@@ -1,0 +1,8 @@
+# torch i torchvision instaluje Dockerfile (wersja tylko na procesor, bez CUDA – obraz o ~2 GB mniejszy)
+open_clip_torch==4.2.2
+timm==1.0.31
+fastapi==0.165.0
+uvicorn==0.54.0
+python-multipart==0.0.34
+pillow==13.0.0
+numpy==2.5.5

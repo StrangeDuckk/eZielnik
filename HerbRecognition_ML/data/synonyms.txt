@@ -1,0 +1,19 @@
+# Synonimy nazw łacińskich. 
+# Format: nazwa = nazwa   (kierunek nie ma znaczenia).
+# po zmianie: restart serwisu ml.
+
+matricaria recutita = matricaria chamomilla
+chamomilla recutita = matricaria chamomilla
+taraxacum campylodes = taraxacum officinale
+jacobaea vulgaris = senecio jacobaea
+piptoporus betulinus = fomitopsis betulina
+boletus badius = imleria badia
+xerocomus badius = imleria badia
+boletus erythropus = neoboletus erythropus
+boletus luridus = suillellus luridus
+boletus satanas = rubroboletus satanas
+polyporus squamosus = cerioporus squamosus
+clitocybe gibba = infundibulicybe gibba
+lepista saeva = lepista personata
+tricholoma flavovirens = tricholoma equestre
+collybia dryophila = gymnopus dryophilus

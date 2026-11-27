@@ -1,5 +1,5 @@
 # =====================================================================
-#  HerbRecognition – baza + API + strona
+#  eZielnik – baza + API + strona + rozpoznawanie zdjęć (ml)
 #
 #  Serwer (Coolify): zasób "Docker Compose" z tego repozytorium, plik /docker-compose.yml
 #  Lokalnie:        docker compose -f docker-compose.yml -f docker-compose.local.yml up --build
@@ -43,8 +43,28 @@ services:
       Jwt__Key: ${JWT_KEY:?Ustaw JWT_KEY (min. 32 znaki)}
       Cors__AllowedOrigins__0: ${PUBLIC_URL:-http://localhost:8080}
       PictureStorage__RootPath: /app/data/pictures
+      Recognition__MlBaseUrl: http://ml:8000/   # rozpoznawanie ze zdjęcia (serwis ml niżej)
     volumes:
       - pictures:/app/data/pictures
+
+  # ---------- rozpoznawanie roślin ze zdjęcia (tylko sieć wewnętrzna) ----------
+  #  BioCLIP (MIT) + PlantCLEF 2024 od Pl@ntNet (CC BY 4.0), działa na procesorze.
+  #  Pierwszy start pobiera modele (~3 GB) do wolumenu ml-models – trwa kilkanaście minut,
+  #  w tym czasie strona pokazuje "modele się uruchamiają". Kolejne starty: ok. 1 minuty.
+  ml:
+    build:
+      context: ./HerbRecognition_ML
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    environment:
+      BIOCLIP_MODEL: ${BIOCLIP_MODEL:-hf-hub:imageomics/bioclip}
+      PLANTCLEF_ENABLED: ${PLANTCLEF_ENABLED:-true}
+      PLANTCLEF_IMG_SIZE: ${PLANTCLEF_IMG_SIZE:-518}
+      TORCH_THREADS: "2"
+    volumes:
+      - ml-models:/models
+    # serwer ma 3,7 GB RAM – limit chroni bazę i API, gdyby modele zajęły za dużo
+    mem_limit: 2200m
 
   # ---------- strona (jedyny element widoczny z internetu) ----------
   web:
@@ -67,3 +87,4 @@ volumes:
   db-data:
   pictures:
   web-keys:
+  ml-models:

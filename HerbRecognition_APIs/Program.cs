@@ -11,9 +11,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 // =====================================================================
 //  Konfiguracja
-//  Lokalnie:   appsettings.Development.json (nie trafia do repozytorium)
-//  Serwer:     zmienne środowiskowe, np. AdminAuth__Password, Jwt__Key,
-//              ConnectionStrings__DefaultConnection (ustawiane w docker-compose / Coolify)
+//  Lokalnie:   appsettings.Development.json (prywatne)
+//  Serwer:     zmienne środowiskowe,ustawiane w docker-compose / Coolify
 // =====================================================================
 
 if (string.IsNullOrWhiteSpace(builder.Configuration["AdminAuth:Username"]) ||
@@ -116,6 +115,15 @@ builder.Services.AddRateLimiter(options =>
             QueueLimit = 0
         }));
 
+    // rozpoznawanie ze zdjęcia: 20 na minutę (dla całej strony) – modele działają na 2 rdzeniach
+    options.AddPolicy("recognize", context =>
+        RateLimitPartition.GetFixedWindowLimiter(ClientKey(context), _ => new FixedWindowRateLimiterOptions
+        {
+            PermitLimit = 20,
+            Window = TimeSpan.FromMinutes(1),
+            QueueLimit = 0
+        }));
+
     // wyszukiwanie: 600 na minutę (dla całej strony)
     options.AddPolicy("search", context =>
         RateLimitPartition.GetFixedWindowLimiter(ClientKey(context), _ => new FixedWindowRateLimiterOptions
@@ -151,6 +159,19 @@ builder.Services.Configure<PictureStorageOptions>(builder.Configuration.GetSecti
 builder.Services.AddSingleton<IPictureFileStore, PictureFileStore>();
 builder.Services.AddSingleton<ImageProcessor>();
 builder.Services.AddScoped<IPictureService, PictureService>();
+
+// rozpoznawanie ze zdjęcia – serwis HerbRecognition_ML (Recognition:MlBaseUrl, na serwerze http://ml:8000/)
+var mlBaseUrl = builder.Configuration["Recognition:MlBaseUrl"];
+
+builder.Services.AddHttpClient<MlClient>(client =>
+{
+    if (!string.IsNullOrWhiteSpace(mlBaseUrl))
+        client.BaseAddress = new Uri(mlBaseUrl);
+
+    // strona czeka na API do 100 s, więc API czeka na modele krócej
+    client.Timeout = TimeSpan.FromSeconds(90);
+});
+builder.Services.AddScoped<IRecognitionService, RecognitionService>();
 
 // -- CORS: adresy z konfiguracji (Cors:AllowedOrigins) ----
 var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>()

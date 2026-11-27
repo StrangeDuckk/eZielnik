@@ -1,0 +1,164 @@
+# Grzyby rosnące w Polsce – nazwy, które BioCLIP bierze pod uwagę poza bazą eZielnika.
+# PlantCLEF zna tylko rośliny, więc bez tej listy grzyb spoza bazy nie dostałby nazwy.
+# Jedna nazwa łacińska w linii; po "#" można dopisać komentarz. Po zmianie restart serwisu ml.
+
+# --- muchomory ---
+Amanita muscaria          # muchomor czerwony
+Amanita phalloides        # muchomor zielonawy
+Amanita virosa            # muchomor jadowity
+Amanita pantherina        # muchomor plamisty
+Amanita rubescens         # muchomor czerwieniejący
+Amanita citrina           # muchomor cytrynowy
+Amanita fulva             # muchomor rdzawobrązowy
+Amanita vaginata          # muchomor pochwiasty
+Amanita strobiliformis    # muchomor szyszkowaty
+
+# --- borowiki, podgrzybki, koźlarze, maślaki ---
+Boletus edulis            # borowik szlachetny
+Boletus reticulatus       # borowik usiatkowany
+Boletus pinophilus        # borowik sosnowy
+Imleria badia             # podgrzybek brunatny
+Xerocomellus chrysenteron # podgrzybek złotawy
+Xerocomellus pruinatus
+Xerocomus subtomentosus   # podgrzybek zajączek
+Hortiboletus rubellus     # podgrzybek czerwonawy
+Neoboletus erythropus     # borowik ceglastopory
+Suillellus luridus        # borowik ponury
+Rubroboletus satanas      # borowik szatański
+Caloboletus calopus
+Butyriboletus appendiculatus # borowik przysadzisty
+Cyanoboletus pulverulentus
+Tylopilus felleus         # goryczak żółciowy
+Gyroporus castaneus       # piaskowiec kasztanowaty
+Chalciporus piperatus     # maślaczek pieprzowy
+Leccinum scabrum          # koźlarz babka
+Leccinum aurantiacum      # koźlarz czerwony
+Leccinum versipelle       # koźlarz pomarańczowożółty
+Leccinum duriusculum      # koźlarz topolowy
+Suillus luteus            # maślak zwyczajny
+Suillus grevillei         # maślak żółty
+Suillus bovinus           # maślak sitarz
+Suillus granulatus        # maślak ziarnisty
+Phylloporus pelletieri    # poroblaszek żółtoczerwony
+
+# --- kurki i podobne ---
+Cantharellus cibarius     # pieprznik jadalny (kurka)
+Cantharellus amethysteus  # pieprznik ametystowy
+Craterellus cornucopioides # lejkowiec dęty
+Craterellus tubaeformis   # pieprznik trąbkowy
+Hygrophoropsis aurantiaca # lisówka pomarańczowa
+Hydnum repandum           # kolczak obłączasty
+
+# --- czubajki, pieczarki ---
+Macrolepiota procera      # czubajka kania
+Macrolepiota mastoidea    # czubajka sutkowata
+Chlorophyllum rhacodes    # czubajka czerwieniejąca
+Lepiota cristata          # czubajeczka cuchnąca
+Leucoagaricus leucothites
+Agaricus campestris       # pieczarka polowa
+Agaricus arvensis         # pieczarka biaława
+Agaricus bisporus         # pieczarka dwuzarodnikowa
+Agaricus xanthodermus     # pieczarka karbolowa
+
+# --- mleczaje, gołąbki ---
+Lactarius deliciosus      # mleczaj rydz
+Lactarius deterrimus      # mleczaj świerkowy
+Lactarius torminosus      # mleczaj wełnianka
+Lactarius piperatus       # mleczaj biel
+Lactarius volemus         # mleczaj smaczny
+Lactarius turpis          # mleczaj paskudnik
+Russula cyanoxantha       # gołąbek modrozielony
+Russula emetica           # gołąbek wymiotny
+Russula vesca             # gołąbek wyborny
+Russula aeruginea         # gołąbek zielonawy
+Russula xerampelina       # gołąbek śledziowy
+Russula ochroleuca        # gołąbek ochrowy
+
+# --- grzyby na drewnie ---
+Armillaria mellea         # opieńka miodowa
+Armillaria ostoyae        # opieńka ciemna
+Pleurotus ostreatus       # boczniak ostrygowaty
+Pleurotus pulmonarius     # boczniak łyżkowaty
+Kuehneromyces mutabilis   # łuszczak zmienny
+Hypholoma fasciculare     # maślanka wiązkowa
+Pholiota squarrosa        # łuskwiak nastroszony
+Galerina marginata        # hełmówka jadowita
+Flammulina velutipes      # płomiennica zimowa
+Laetiporus sulphureus     # żółciak siarkowy
+Fistulina hepatica        # ozorek dębowy
+Sparassis crispa          # siedzuń sosnowy
+Grifola frondosa          # żagwica listkowata
+Meripilus giganteus       # flagowiec olbrzymi
+Cerioporus squamosus      # żagiew łuskowata
+Fomes fomentarius         # hubiak pospolity
+Fomitopsis betulina       # pniarek brzozowy
+Fomitopsis pinicola       # pniarek obrzeżony
+Trametes versicolor       # wrośniak różnobarwny
+Ganoderma applanatum      # lakownica spłaszczona
+Ganoderma lucidum         # lakownica żółtawa
+Inonotus obliquus         # błyskoporek podkorowy (czaga)
+Daedaleopsis confragosa
+Bjerkandera adusta        # szarogąbka osmalona
+Stereum hirsutum          # skórnik szorstki
+Schizophyllum commune     # rozszczepka pospolita
+Hericium coralloides      # soplówka gałęzista
+Hericium erinaceus        # soplówka jeżowata
+Auricularia auricula-judae # uszak bzowy
+Tremella mesenterica      # trzęsak pomarańczowożółty
+Calocera viscosa          # pięknoróg największy
+Xylaria hypoxylon         # próchnilec gałęzisty
+Kretzschmaria deusta      # zgliszczak pospolity
+Pluteus cervinus          # drobnołuszczak jeleni
+Mycena galericulata       # grzybówka hełmiasta
+
+# --- purchawki i inne ---
+Calvatia gigantea         # czasznica olbrzymia
+Lycoperdon perlatum       # purchawka chropowata
+Lycoperdon pyriforme      # purchawka gruszkowata
+Scleroderma citrinum      # tęgoskór pospolity
+Phallus impudicus         # sromotnik bezwstydny
+Clathrus archeri          # okratek australijski
+Coprinus comatus          # czernidłak kołpakowaty
+Coprinellus micaceus      # czernidłak błyszczący
+Coprinopsis atramentaria  # czernidłak pospolity
+Morchella esculenta       # smardz jadalny
+Morchella elata           # smardz wyniosły
+Gyromitra esculenta       # piestrzenica kasztanowata
+Helvella crispa           # piestrzyca kędzierzawa
+Sarcoscypha austriaca     # czarka austriacka
+Aleuria aurantia          # dzbankówka pomarańczowa
+Ramaria flava             # koralówka żółta
+Clavulina coralloides     # koralówka grzebieniasta
+
+# --- lejkówki, gąski, gąsówki i inne blaszkowe ---
+Clitocybe nebularis       # lejkówka szarawa
+Infundibulicybe gibba
+Clitocybe rivulosa        # lejkówka jadowita
+Clitocybe odora           # lejkówka anyżkowa
+Lepista nuda              # gąsówka fioletowawa
+Lepista personata         # gąsówka fioletowonoga
+Tricholoma equestre       # gąska zielonka
+Tricholoma portentosum    # gąska niekształtna
+Tricholoma pardinum       # gąska tygrysia
+Tricholoma terreum        # gąska ziemistka
+Tricholoma sulphureum     # gąska siarkowa
+Calocybe gambosa          # majówka wiosenna
+Entoloma sinuatum         # dzwonkówka trująca
+Inocybe erubescens        # strzępiak ceglasty
+Cortinarius rubellus      # zasłonak rudawy
+Cortinarius orellanus     # zasłonak rudy
+Paxillus involutus        # krowiak podwinięty
+Gomphidius glutinosus     # klejówka glutowata
+Chroogomphus rutilus      # klejek czerwonawy
+Laccaria laccata          # lakówka pospolita
+Laccaria amethystina      # lakówka ametystowa
+Marasmius oreades         # twardzioszek przydrożny
+Gymnopus dryophilus       # łysostopek pospolity
+Mycena pura               # grzybówka fioletowawa
+Stropharia aeruginosa     # pierścieniak grynszpanowy
+Stropharia rugosoannulata # pierścieniak uprawny
+Agrocybe praecox          # polówka wczesna
+Hebeloma crustuliniforme  # włośnianka rosista
+Albatrellus ovinus        # naziemek białawy
+Strobilurus esculentus    # szyszkówka świerkowa
+Psilocybe semilanceata    # łysiczka lancetowata

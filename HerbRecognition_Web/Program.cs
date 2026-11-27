@@ -46,6 +46,10 @@ builder.Services.AddScoped<AdminProductApiService>();
 // miniatury zgłoszeń na kafelkach – tylko dla zalogowanego admina
 builder.Services.AddScoped<PendingPictureService>();
 
+// rozpoznawanie ze zdjęcia + przekazanie wyniku do wyszukiwarki / zgłoszenia
+builder.Services.AddScoped<RecognitionApiService>();
+builder.Services.AddScoped<RecognitionHandoff>();
+
 // =====================================================================
 //  Klucze Data Protection w trwałym folderze
 //  każde wdrożenie ma stare klucze, otwarte formularze

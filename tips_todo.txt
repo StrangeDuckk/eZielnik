@@ -1,8 +1,15 @@
-- testy jednostkowe bazy i api
+- dostosowac zeby model lepiej wypelnial formularz
+
+- w formularzu dodac informacje i:
+	- łodyga kształt -> w przekroju
+	- miesiąc zbioru (przy kazdym) początek sezonu zbioru
+	- ksztalt -> dla lisci pojedynczego liscia
+	- ksztalt dla kwiatu -> cale kwiaty, nie pojedyncze listki
+	- smak w kwiecie -> smak zapachu i kwiatu
+	- w lisciach -> dlugosc srednia lisci
 
 ------------------------------------- jesli starczy czasu: -------------------------
-- wypelnianie formularza po zdjeciu
-- wyszukiwanie po zdjeciu (najpierw wypelnienie formularza, potem wyszukanie i po zdjeciu i po formularzu, glosowanie wyniku)
+- testy jednostkowe bazy i api
 
 
 ---------------------------------------------------------------------------------------

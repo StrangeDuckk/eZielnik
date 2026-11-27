@@ -1,0 +1,523 @@
+@page "/recognize"
+
+@using HerbRecognition_Web.Communication.DTOs
+@using HerbRecognition_Web.Communication.Services
+
+@inject RecognitionApiService RecognitionApi
+@inject RecognitionHandoff Handoff
+@inject NavigationManager Navigation
+
+@*
+    Rozpoznawanie rośliny ze zdjęcia.
+    Zdjęcie jest zmniejszane w przeglądarce do 1024 px (JPEG, bez EXIF/GPS) i wysyłane do API.
+    API pyta dwa modele i ogłasza wynik głosowania trzech typów:
+      1. BioCLIP – rozpoznanie ze zdjęcia,
+      2. BioCLIP – wypełniony formularz + wyszukiwarka eZielnika,
+      3. PlantCLEF (Pl@ntNet) – rozpoznanie ze zdjęcia.
+    Zdjęcie nie jest zapisywane na serwerze (chyba że użytkownik zgłosi z nim nową roślinę).
+*@
+
+<PageTitle>Rozpoznaj roślinę ze zdjęcia</PageTitle>
+
+<div class="plants-page rc-page">
+
+    <section class="plants-header">
+        <span class="section-label">ROZPOZNAWANIE ZE ZDJĘCIA</span>
+        <h1>Rozpoznaj roślinę</h1>
+        <p>
+            Zrób zdjęcie albo wybierz je z galerii. Dwa modele oddają trzy niezależne głosy
+            i wybierają jedną roślinę – zobaczysz też, co wskazał każdy z nich.
+        </p>
+    </section>
+
+    @* ================= 1. zdjęcie ================= *@
+    <section class="rc-upload @(photo is null ? "is-empty" : "")" aria-label="Zdjęcie rośliny">
+
+        @if (photo is null)
+        {
+            <div class="rc-drop">
+                <span class="rc-drop-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M4 8.5A2.5 2.5 0 0 1 6.5 6h1.6l1.3-2h5.2l1.3 2h1.6A2.5 2.5 0 0 1 20 8.5v9a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 17.5Z" />
+                        <circle cx="12" cy="13" r="3.6" />
+                    </svg>
+                </span>
+
+                <h2>Dodaj zdjęcie rośliny</h2>
+                <p>Jedna roślina w kadrze, ostre zbliżenie kwiatu, liścia albo kapelusza, dzienne światło.</p>
+
+                <div class="rc-drop-actions">
+                    @* na telefonie otwiera od razu aparat *@
+                    <label class="rc-button is-primary rc-camera-only @(isReading ? "is-disabled" : "")">
+                        <InputFile OnChange="OnPhotoSelectedAsync" accept="image/*" capture="environment" disabled="@isReading" />
+                        <span aria-hidden="true">📷</span> Zrób zdjęcie
+                    </label>
+
+                    <label class="rc-button @(isReading ? "is-disabled" : "")">
+                        <InputFile OnChange="OnPhotoSelectedAsync" accept="image/jpeg,image/png,image/webp,image/heic,image/heif" disabled="@isReading" />
+                        <span aria-hidden="true">🖼️</span> Wybierz z galerii
+                    </label>
+                </div>
+
+                @if (isReading)
+                {
+                    <p class="rc-hint">Wczytywanie zdjęcia…</p>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="rc-preview">
+                <div class="rc-preview-image @(isBusy ? "is-busy" : "")">
+                    <img src="@photo.PreviewUrl" alt="Wybrane zdjęcie rośliny" />
+
+                    @if (isBusy)
+                    {
+                        <div class="rc-scan" aria-hidden="true"></div>
+                    }
+                </div>
+
+                <div class="rc-preview-side">
+                    @if (isBusy)
+                    {
+                        <div class="rc-busy" role="status">
+                            <div class="loading-spinner"></div>
+                            <div>
+                                <strong>Modele analizują zdjęcie…</strong>
+                                <p>Zwykle trwa to 5–15 sekund.</p>
+                            </div>
+                        </div>
+                    }
+                    else if (result is null)
+                    {
+                        <h2>Zdjęcie gotowe</h2>
+                        <p>Sprawdź, czy roślina jest ostra i dobrze widoczna, i uruchom rozpoznawanie.</p>
+                    }
+                    else
+                    {
+                        <h2>Gotowe</h2>
+                        <p>Wynik i typy modeli są poniżej. Możesz spróbować z innym ujęciem tej samej rośliny.</p>
+                    }
+
+                    <div class="rc-preview-actions">
+                        @if (result is null)
+                        {
+                            <button type="button" class="rc-button is-primary" disabled="@isBusy" @onclick="RecognizeAsync">
+                                Rozpoznaj <span aria-hidden="true">→</span>
+                            </button>
+                        }
+
+                        <button type="button" class="rc-button" disabled="@isBusy" @onclick="Reset">
+                            @(result is null ? "Zmień zdjęcie" : "Rozpoznaj inne zdjęcie")
+                        </button>
+                    </div>
+                </div>
+            </div>
+        }
+
+        @if (error is not null)
+        {
+            <p class="rc-error" role="alert">@error</p>
+        }
+    </section>
+
+    @* ================= 2. wynik ================= *@
+    @if (result is not null)
+    {
+        <section class="rc-results" aria-live="polite">
+
+            <h2 class="rc-section-title" tabindex="-1" @ref="resultsHeading">Wynik głosowania</h2>
+
+            @if (result.Final is { } final)
+            {
+                var poisonous = LibraryFilter.IsPoisonous(final.PoisonabilityDescription);
+
+                <article class="rc-final @StatusClass">
+                    <div class="rc-final-media">
+                        @if (!string.IsNullOrWhiteSpace(final.ThumbnailUrl))
+                        {
+                            <img src="@final.ThumbnailUrl" alt="@final.DisplayName" />
+                        }
+                        else
+                        {
+                            <span class="rc-final-placeholder" aria-hidden="true">@Icon(final)</span>
+                        }
+                    </div>
+
+                    <div class="rc-final-body">
+                        <div class="rc-pills">
+                            <span class="rc-pill rc-status">@StatusText</span>
+
+                            @if (!string.IsNullOrWhiteSpace(final.PlantTypeName))
+                            {
+                                <span class="rc-pill">@final.PlantTypeName</span>
+                            }
+
+                            @if (poisonous)
+                            {
+                                <span class="rc-pill is-poison">⚠ Trująca</span>
+                            }
+
+                            @if (!final.InDatabase)
+                            {
+                                <span class="rc-pill is-outside">Brak w eZielniku</span>
+                            }
+                        </div>
+
+                        <h3>@final.DisplayName</h3>
+                        @if (final.DisplayName != final.LatinName)
+                        {
+                            <p class="rc-latin">@final.LatinName</p>
+                        }
+
+                        <div class="rc-meter" aria-hidden="true">
+                            <span style="width: @Percent(result.Confidence)%"></span>
+                        </div>
+                        <p class="rc-meter-text">
+                            Pewność głosowania: <strong>@Percent(result.Confidence)%</strong> ·
+                            @VotesText
+                        </p>
+
+                        @if (poisonous)
+                        {
+                            <p class="rc-poison-note">
+                                <strong>Uwaga:</strong> @final.PoisonabilityDescription
+                            </p>
+                        }
+
+                        @if (result.Status == "uncertain")
+                        {
+                            <p class="rc-note">
+                                Modele nie są zgodne – to najbardziej prawdopodobny wynik, ale potraktuj go ostrożnie.
+                                Porównaj typy poniżej albo zrób wyraźniejsze zdjęcie.
+                            </p>
+                        }
+
+                        <div class="rc-final-actions">
+                            @if (final.PlantId is int plantId)
+                            {
+                                <a href="@($"/plants/{plantId}")" class="rc-button is-primary">
+                                    Zobacz roślinę <span aria-hidden="true">→</span>
+                                </a>
+                            }
+                            else
+                            {
+                                <button type="button" class="rc-button is-primary" @onclick="() => ReportPlant(final)">
+                                    Zgłoś tę roślinę <span aria-hidden="true">→</span>
+                                </button>
+                            }
+                        </div>
+                    </div>
+                </article>
+            }
+            else
+            {
+                <div class="rc-final is-none">
+                    <div class="rc-final-body">
+                        <h3>Nie udało się wskazać rośliny</h3>
+                        <p class="rc-note">Żaden model nie oddał głosu. Spróbuj zdjęcia z bliska, na którym roślina wypełnia większość kadru.</p>
+                    </div>
+                </div>
+            }
+
+            <p class="rc-safety">
+                <span aria-hidden="true">⚠</span>
+                Rozpoznanie ze zdjęcia to wskazówka, a nie pewność. Nigdy nie jedz rośliny ani grzyba
+                tylko na tej podstawie.
+            </p>
+
+            @* ----- typy modeli ----- *@
+            <h2 class="rc-section-title">Typy modeli</h2>
+
+            <div class="rc-votes">
+                @foreach (var vote in result.Votes)
+                {
+                    <article class="rc-vote @(vote.Voted ? (vote.AgreesWithFinal ? "is-agree" : "is-differ") : "is-abstain")">
+                        <header class="rc-vote-head">
+                            <div>
+                                <span class="rc-vote-model">@vote.ModelName</span>
+                                <span class="rc-vote-method">@vote.Method</span>
+                            </div>
+                            <span class="rc-vote-badge">
+                                @(vote.Voted ? (vote.AgreesWithFinal ? "✓ zgodny z wynikiem" : "inny typ") : "nie głosował")
+                            </span>
+                        </header>
+
+                        @if (vote.Choice is { } choice)
+                        {
+                            <div class="rc-vote-choice">
+                                <span class="rc-vote-icon" aria-hidden="true">@Icon(choice)</span>
+                                <div>
+                                    @if (choice.PlantId is int id)
+                                    {
+                                        <a href="@($"/plants/{id}")" class="rc-vote-name">@choice.DisplayName</a>
+                                    }
+                                    else
+                                    {
+                                        <span class="rc-vote-name">@choice.DisplayName</span>
+                                    }
+                                    @if (choice.DisplayName != choice.LatinName)
+                                    {
+                                        <span class="rc-vote-latin">@choice.LatinName</span>
+                                    }
+                                </div>
+                                <span class="rc-vote-score">@Percent(vote.Confidence)%</span>
+                            </div>
+
+                            @if (vote.TiedCount > 1)
+                            {
+                                <p class="rc-vote-note">Tak samo pasuje jeszcze @(vote.TiedCount - 1) @(vote.TiedCount == 2 ? "roślina" : "roślin(y)") – głos jest podzielony.</p>
+                            }
+                        }
+
+                        @if (!vote.Voted && vote.AbstainReason is not null)
+                        {
+                            <p class="rc-vote-note">@vote.AbstainReason</p>
+                        }
+
+                        @if (vote.Alternatives.Count > 0)
+                        {
+                            <div class="rc-vote-alts">
+                                <span>Kolejne typy</span>
+                                <ul>
+                                    @foreach (var alt in vote.Alternatives)
+                                    {
+                                        <li>
+                                            <span>@alt.Plant.DisplayName</span>
+                                            <span class="rc-vote-alt-score">@Percent(alt.Confidence)%</span>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        }
+
+                        @if (vote.Source == "bioclip-form")
+                        {
+                            var accepted = result.FilledFields.Where(f => f.Accepted).ToList();
+                            var rejected = result.FilledFields.Where(f => !f.Accepted).ToList();
+
+                            <div class="rc-fields">
+                                <span>Cechy odczytane ze zdjęcia</span>
+
+                                @if (accepted.Count == 0)
+                                {
+                                    <p class="rc-vote-note">Brak cech, których model byłby pewien.</p>
+                                }
+                                else
+                                {
+                                    <ul class="rc-chips">
+                                        @foreach (var f in accepted)
+                                        {
+                                            <li title="Pewność @Percent(f.Confidence)%">
+                                                @f.Part – @f.Field: <strong>@f.Value</strong>
+                                            </li>
+                                        }
+                                    </ul>
+                                }
+
+                                @if (rejected.Count > 0)
+                                {
+                                    <details class="rc-rejected">
+                                        <summary>Pominięte, bo model nie był pewien (@rejected.Count)</summary>
+                                        <ul>
+                                            @foreach (var f in rejected)
+                                            {
+                                                <li>@f.Part – @f.Field: @f.Value (@Percent(f.Confidence)%)</li>
+                                            }
+                                        </ul>
+                                    </details>
+                                }
+                            </div>
+
+                            @if (result.FilledForm is not null)
+                            {
+                                <button type="button" class="rc-link-button" @onclick="OpenFilledForm">
+                                    Zobacz wypełniony formularz <span aria-hidden="true">→</span>
+                                </button>
+                            }
+                        }
+                    </article>
+                }
+            </div>
+
+            @foreach (var note in result.Notes)
+            {
+                <p class="rc-note">@note</p>
+            }
+
+            <p class="rc-credits">
+                Analiza trwała @((result.DurationMs / 1000.0).ToString("0.0")) s. Zdjęcie nie zostało zapisane.
+                Modele: <a href="https://imageomics.github.io/bioclip/" target="_blank" rel="noopener noreferrer">BioCLIP</a>
+                (Imageomics, licencja MIT) oraz
+                <a href="https://zenodo.org/records/10848263" target="_blank" rel="noopener noreferrer">PlantCLEF 2024</a>
+                (Pl@ntNet, licencja CC BY 4.0).
+            </p>
+        </section>
+    }
+</div>
+
+@code {
+    private const int UploadMaxSide = 1024;   // modelom wystarcza, a wysyłka jest szybka
+    private const int PreviewMaxSide = 720;
+    private const long MaxReadBytes = 20 * 1024 * 1024;
+
+    private PhotoUpload? photo;
+    private RecognitionResultDTO? result;
+    private string? error;
+    private bool isReading;
+    private bool isBusy;
+
+    private ElementReference resultsHeading;
+    private bool scrollToResults;
+
+    private async Task OnPhotoSelectedAsync(InputFileChangeEventArgs e)
+    {
+        error = null;
+        result = null;
+
+        var file = e.File;
+        if (!file.ContentType.StartsWith("image/", StringComparison.OrdinalIgnoreCase))
+        {
+            error = $"„{file.Name}” nie jest zdjęciem.";
+            return;
+        }
+
+        isReading = true;
+        try
+        {
+            var upload = await file.RequestImageFileAsync("image/jpeg", UploadMaxSide, UploadMaxSide);
+            var preview = await file.RequestImageFileAsync("image/jpeg", PreviewMaxSide, PreviewMaxSide);
+
+            var data = await ReadAllAsync(upload);
+            var previewData = await ReadAllAsync(preview);
+
+            photo = new PhotoUpload(
+                Path.ChangeExtension(file.Name, ".jpg"),
+                data,
+                $"data:image/jpeg;base64,{Convert.ToBase64String(previewData)}");
+        }
+        catch (Exception)
+        {
+            error = $"Nie udało się wczytać „{file.Name}”. Zapisz zdjęcie jako JPEG lub PNG i wybierz ponownie.";
+        }
+        finally
+        {
+            isReading = false;
+        }
+    }
+
+    private async Task RecognizeAsync()
+    {
+        if (photo is null || isBusy) return;
+
+        error = null;
+        isBusy = true;
+
+        try
+        {
+            result = await RecognitionApi.RecognizeAsync(photo);
+            scrollToResults = true;
+        }
+        catch (RecognitionApiException ex)
+        {
+            error = ex.Message;
+        }
+        catch (Exception ex)
+        {
+            Console.Error.WriteLine($"Rozpoznawanie nie powiodło się: {ex}");
+            error = "Nie udało się rozpoznać rośliny. Spróbuj ponownie.";
+        }
+        finally
+        {
+            isBusy = false;
+        }
+    }
+
+    private void Reset()
+    {
+        photo = null;
+        result = null;
+        error = null;
+    }
+
+    private void OpenFilledForm()
+    {
+        if (result?.FilledForm is null) return;
+
+        Handoff.SetCriteria(result.FilledForm);
+        Navigation.NavigateTo("/search/form?fromPhoto=1");
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!scrollToResults) return;
+        scrollToResults = false;
+
+        try
+        {
+            await resultsHeading.FocusAsync();   // przewija do wyniku
+        }
+        catch (Exception)
+        {
+            // brak przewinięcia nie jest problemem
+        }
+    }
+
+    // ------------------------------------------------------------------
+
+    private string StatusClass => result?.Status switch
+    {
+        "agreed" => "is-agreed",
+        "majority" => "is-majority",
+        "single" => "is-single",
+        _ => "is-uncertain"
+    };
+
+    private string StatusText => result?.Status switch
+    {
+        "agreed" => "Zgodny wynik",
+        "majority" => "Wynik większością głosów",
+        "single" => "Jeden pewny głos",
+        _ => "Niepewny wynik"
+    };
+
+    private string VotesText
+    {
+        get
+        {
+            if (result is null) return "";
+            if (result.VotesForFinal > 0)
+                return $"na pierwszym miejscu u {result.VotesForFinal} z {result.VotesTotal} {Models(result.VotesTotal)}";
+            return $"pojawia się w typach {result.SupportCount} z {result.VotesTotal} {Models(result.VotesTotal)}";
+        }
+    }
+
+    private static string Models(int n) => n == 1 ? "głosującego modelu" : "głosujących";
+
+    private static int Percent(double value) => (int)Math.Round(Math.Clamp(value, 0, 1) * 100);
+
+    private static string Icon(RecognitionPlantDTO plant) =>
+        plant.PlantTypeName?.Trim().ToLowerInvariant() switch
+        {
+            "grzyb" => "🍄",
+            "drzewo" => "🌳",
+            _ => "🌿"
+        };
+
+    /// <summary>Zgłoszenie rośliny spoza bazy: nazwa łacińska i to zdjęcie są od razu w formularzu.</summary>
+    private void ReportPlant(RecognitionPlantDTO plant)
+    {
+        if (photo is not null)
+            Handoff.SetPhoto(photo);
+
+        Navigation.NavigateTo($"/plant-form?latin={Uri.EscapeDataString(plant.LatinName)}");
+    }
+
+    private static async Task<byte[]> ReadAllAsync(IBrowserFile file)
+    {
+        await using var stream = file.OpenReadStream(MaxReadBytes);
+        using var ms = new MemoryStream();
+        await stream.CopyToAsync(ms);
+        return ms.ToArray();
+    }
+}

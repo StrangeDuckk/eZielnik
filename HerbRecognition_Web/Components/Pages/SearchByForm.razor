@@ -5,6 +5,7 @@
 @using HerbRecognition_Web.Components.Shared
 
 @inject PlantApiService PlantApiService
+@inject RecognitionHandoff Handoff
 
 <PageTitle>Wyszukiwanie przez formularz</PageTitle>
 
@@ -46,7 +47,17 @@
         </div>
     </section> *@
 
+    @if (prefill is not null)
+    {
+        <div class="search-prefill-note" role="status">
+            <strong>Formularz wypełnił model BioCLIP na podstawie Twojego zdjęcia.</strong>
+            Sprawdź odczytane cechy, popraw to, co się nie zgadza, i dopisz resztę – np. zapach albo miesiąc zbioru.
+            <a href="/recognize">← Wróć do rozpoznawania</a>
+        </div>
+    }
+
     <PlantSubmissionForm SearchMode="true"
+                         InitialCriteria="prefill"
                          SubmitText="Wyszukaj"
                          BusyText="Wyszukiwanie..."
                          OnSearch="SearchAsync"
@@ -188,6 +199,14 @@
 
 @code {
     private int minMatch = 50;
+
+    // formularz wypełniony na stronie "Rozpoznaj ze zdjęcia" (/search/form?fromPhoto=1)
+    private PlantSearchCriteriaDTO? prefill;
+
+    protected override void OnInitialized()
+    {
+        prefill = Handoff.TakeCriteria();
+    }
     private bool includePending = true;
 
     private PlantSearchResponseDTO? response;
